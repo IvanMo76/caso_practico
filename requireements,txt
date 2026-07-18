@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+PyMySQL
+gunicorn
+numpy
+matplotlib
+plotly
+flask-login
+Werkzeug
