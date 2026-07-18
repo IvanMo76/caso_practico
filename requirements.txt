@@ -1,9 +1,12 @@
 Flask
 Flask-SQLAlchemy
+Flask-Login
+SQLAlchemy
+Werkzeug
 PyMySQL
-gunicorn
+cryptography
 numpy
 matplotlib
 plotly
-flask-login
-Werkzeug
+pandas
+gunicorn
