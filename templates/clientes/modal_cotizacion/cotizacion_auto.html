@@ -1,0 +1,114 @@
+<div class="modal fade" id="modalCotizacion" tabindex="-1" aria-labelledby="modalCotizacionLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow">
+
+            <!-- Encabezado -->
+            <div class="modal-header bg-dark text-white">
+
+                <h4 class="modal-title" id="modalCotizacionLabel">
+                    <i class="fa-solid fa-file-signature me-2"></i>
+                    Cotizacion de {{catalogo.marca}} {{catalogo.modelo}}
+                </h4>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <!-- Formulario -->
+            <form action="/registrar_cotizacion_auto" method="POST">
+                <div class="modal-body">
+
+                    <!-- ID del vehículo -->
+                    <input type="hidden" name="id_auto" id="modalIdAuto" value="{{ catalogo.id_auto }}">
+                    <!-- Información del vehículo -->
+                    <div class="alert alert-light border mb-4 row g-3">
+
+                        <h6 class="mb-2 fw-bold">
+                            Vehículo seleccionado
+
+                        </h6>
+
+                        <div id="modalAutoTexto">
+                            {{catalogo.marca}} {{catalogo.modelo}} {{catalogo.anio}}
+                        </div>
+
+                    </div>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Nombre(s)
+                            </label>
+
+                            <input type="text" class="form-control" name="nombre_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Apellido paterno
+                            </label>
+
+                            <input type="text" class="form-control" name="ap_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Apellido materno
+                            </label>
+
+                            <input type="text" class="form-control" name="am_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Correo electrónico
+                            </label>
+
+                            <input type="email" class="form-control" name="correo_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Teléfono
+                            </label>
+
+                            <input type="text" class="form-control solo-numeros" name="celular_cliente" maxlength="10"
+                                inputmode="numeric" autocomplete="off" pattern="[0-9]{10}" placeholder="Ej. 7121234567"
+                                required>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit" class="btn btn-dark">
+
+                        <i class="fa-solid fa-paper-plane me-2"></i>
+
+                        Enviar Cotización
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

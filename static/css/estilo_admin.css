@@ -1,87 +1,1116 @@
-body{
-    background:#f4f6f9;
-    padding-top:70px;
+/* =====================================
+   CATÁLOGO ADMINISTRATIVO DE VEHÍCULOS
+===================================== */
+
+.catalogo-admin {
+    margin-top: 4em;
+    padding: 0 10px 30px;
 }
 
-.navbar{
-    height:70px;
+.catalogo-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.10);
 }
 
-.offcanvas{
-    width:280px;
+.catalogo-header {
+    min-height: 90px;
+    padding: 20px 28px;
+    border: none;
+    background: linear-gradient(135deg, #0d6efd, #084298);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.nav-link{
-    padding:14px 25px;
-    transition:all .3s ease;
-    border-left:4px solid transparent;
+.catalogo-header h4 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
-.nav-link:hover{
-    background:#212529;
-    border-left:4px solid #0d6efd;
-    color:#fff !important;
+.catalogo-subtitulo {
+    display: block;
+    margin-bottom: 3px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.nav-link.active{
-    background:#0d6efd;
-    color:#fff !important;
+.catalogo-header-icon {
+    font-size: 38px;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-.offcanvas-header{
-    background:#111827;
+.catalogo-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
 }
 
-.border-bottom{
-    border-color:rgba(255,255,255,.1)!important;
+.catalogo-toolbar h5 {
+    color: #172033;
+    font-size: 18px;
+    font-weight: 700;
 }
 
-.card{
-    border-radius:15px;
+.btn-agregar-vehiculo {
+    min-height: 42px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 9px;
+    background: #0d6efd;
+    color: #ffffff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 5px 12px rgba(13, 110, 253, 0.22);
+    transition: all 0.2s ease;
 }
 
-.card-header{
-    font-weight:600;
+.btn-agregar-vehiculo:hover {
+    background: #084298;
+    color: #ffffff;
+    transform: translateY(-1px);
 }
 
-#tablaAutos img{
-    transition:.3s;
+.catalogo-table-container {
+    border: 1px solid #e4e9f0;
+    border-radius: 12px;
+    background: #ffffff;
 }
 
-#tablaAutos img:hover{
-    transform:scale(1.8);
-    cursor:pointer;
+/* Encabezado */
+
+#tablaAutos {
+    margin: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-table.dataTable tbody tr:hover{
-    background:#f8f9fa;
+/* Encabezado original y encabezado generado por DataTables */
+#tablaAutos thead th,
+#tablaAutos_wrapper table.dataTable thead th,
+#tablaAutos_wrapper .dataTables_scrollHead thead th,
+#tablaAutos_wrapper .dt-scroll-head thead th {
+    background-color: #172033 !important;
+    color: #ffffff !important;
+    border-color: #172033 !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
 }
 
-@media (max-width: 768px){
+/* Mantener blancos los indicadores de ordenamiento */
+#tablaAutos_wrapper table.dataTable thead th::before,
+#tablaAutos_wrapper table.dataTable thead th::after {
+    color: #ffffff !important;
+}
 
-    .card{
-        border-radius: 12px;
+#tablaAutos thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+#tablaAutos thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+/* Filas */
+
+#tablaAutos tbody td {
+    padding: 14px;
+    border-bottom: 1px solid #edf0f4;
+    color: #4b5563;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+#tablaAutos tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+#tablaAutos tbody tr:hover {
+    background: #eef5ff;
+}
+
+#tablaAutos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.vehiculo-id {
+    color: #0d6efd;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.vehiculo-imagen-container {
+    width: 82px;
+    height: 58px;
+    border: 2px solid #ffffff;
+    border-radius: 9px;
+    overflow: hidden;
+    background: #e9ecef;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.16);
+}
+
+/*
+   Mantiene fija la columna y el espacio del carrusel. De esta manera,
+   Bootstrap puede cambiar de imagen sin recalcular el ancho o la altura
+   de las demás celdas de la tabla.
+*/
+#tablaAutos thead th:first-child,
+#tablaAutos tbody td:first-child {
+    width: 178px !important;
+    min-width: 178px !important;
+    max-width: 178px !important;
+}
+
+.vehiculo-carousel {
+    position: relative;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #e9ecef;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.16);
+}
+
+.vehiculo-carousel .carousel-inner,
+.vehiculo-carousel .carousel-item {
+    width: 100%;
+    height: 100%;
+}
+
+.vehiculo-carousel .carousel-inner {
+    position: relative;
+    overflow: hidden;
+}
+
+.vehiculo-carousel .vehiculo-imagen {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: scale-down;
+    background: #ffffff;
+}
+
+/* El contador queda superpuesto y no aumenta la altura de la fila. */
+.cantidad-imagenes {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    z-index: 5;
+    padding: 4px 7px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1;
+}
+
+.vehiculo-imagen-container:hover .vehiculo-imagen {
+    transform: scale(1.12);
+}
+
+.vehiculo-marca {
+    color: #172033;
+    font-weight: 700;
+}
+
+.vehiculo-modelo {
+    color: #495057;
+    font-weight: 600;
+}
+
+.vehiculo-tipo {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #b6d4fe;
+    border-radius: 20px;
+    background: #e7f1ff;
+    color: #084298;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.vehiculo-descripcion {
+    max-width: 230px;
+    overflow: hidden;
+    color: #6b7280;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.vehiculo-precio {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 7px;
+    background: #d1e7dd;
+    color: #0f5132;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Botones de acciones */
+
+.acciones-vehiculo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.btn-editar-vehiculo,
+.btn-eliminar-vehiculo {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-editar-vehiculo {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.btn-editar-vehiculo:hover {
+    background: #198754;
+    color: #ffffff;
+}
+
+.btn-eliminar-vehiculo {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.btn-eliminar-vehiculo:hover {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+/* =====================================
+   CONTROLES DE DATATABLES
+===================================== */
+
+#tablaAutos_wrapper {
+    padding: 18px;
+}
+
+#tablaAutos_wrapper .dt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+#tablaAutos_wrapper .dt-button {
+    margin: 0;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 7px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+#tablaAutos_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+
+#tablaAutos_wrapper .dataTables_filter label {
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#tablaAutos_wrapper .dataTables_filter input {
+    min-width: 230px;
+    height: 39px;
+    margin-left: 8px;
+    padding: 7px 12px;
+    border: 1px solid #d5dbe3;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+#tablaAutos_wrapper .dataTables_filter input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.14);
+}
+
+#tablaAutos_wrapper .dataTables_info {
+    padding-top: 16px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* Paginación */
+
+#tablaAutos_wrapper .dataTables_paginate {
+    padding-top: 12px;
+}
+
+#tablaAutos_wrapper .dataTables_paginate .paginate_button {
+    min-width: 36px;
+    height: 36px;
+    margin: 0 3px;
+    padding: 7px 11px !important;
+    border: 1px solid #dce1e7 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: #495057 !important;
+    box-shadow: none !important;
+}
+
+#tablaAutos_wrapper .dataTables_paginate .paginate_button:hover {
+    border-color: #0d6efd !important;
+    background: #e7f1ff !important;
+    color: #0d6efd !important;
+}
+
+#tablaAutos_wrapper .dataTables_paginate .paginate_button.current,
+#tablaAutos_wrapper .dataTables_paginate .paginate_button.current:hover {
+    border-color: #0d6efd !important;
+    background: #0d6efd !important;
+    color: #ffffff !important;
+}
+
+#tablaAutos_wrapper .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.45;
+    cursor: not-allowed !important;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .catalogo-admin {
+        padding: 0 3px 20px;
     }
 
-    .dt-buttons{
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-bottom: 10px;
+    .catalogo-header {
+        min-height: 80px;
+        padding: 17px 20px;
     }
 
-    .dt-buttons .btn{
+    .catalogo-header h4 {
+        font-size: 19px;
+    }
+
+    .catalogo-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .btn-agregar-vehiculo {
+        width: 100%;
+    }
+
+    #tablaAutos_wrapper {
+        padding: 12px;
+    }
+
+    #tablaAutos_wrapper .dt-buttons {
+        width: 100%;
+    }
+
+    #tablaAutos_wrapper .dt-button {
+        flex: 1;
         font-size: 12px;
-        padding: 6px 10px;
     }
 
-    #tablaAutos img{
-        width: 60px !important;
-        height: 45px !important;
+    #tablaAutos_wrapper .dataTables_filter {
+        float: none;
+        text-align: left;
     }
 
-    .dataTables_filter input{
-        width: 100% !important;
-        margin-top: 5px;
+    #tablaAutos_wrapper .dataTables_filter label,
+    #tablaAutos_wrapper .dataTables_filter input {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #tablaAutos_wrapper .dataTables_filter input {
+        min-width: 100%;
+        margin-top: 6px;
+    }
+
+    #tablaAutos_wrapper .dataTables_info,
+    #tablaAutos_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+
+    .vehiculo-imagen-container {
+        width: 65px;
+        height: 48px;
+    }
+
+    #tablaAutos thead th:first-child,
+    #tablaAutos tbody td:first-child {
+        width: 93px !important;
+        min-width: 93px !important;
+        max-width: 93px !important;
+    }
+
+    .vehiculo-carousel {
+        width: 65px;
+        min-width: 65px;
+        max-width: 65px;
+        height: 48px;
+        min-height: 48px;
+        max-height: 48px;
     }
 }
+
+
+
+    .card-reportes {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+    .card-header .reporte {
+        background: #0d6efd;
+        color: #fff;
+        border-radius: 18px 18px 0 0 !important;
+    }
+
+    .grafica {
+        height: 320px;
+    }
+
+    .grafica-lineal {
+        width: 100%;
+        height: 360px;
+    }
+
+    .titulo-grafica {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #444;
+    }
+
+    @media(max-width:768px) {
+        .grafica {
+            height: 280px;
+        }
+
+        .grafica-lineal {
+            height: 300px;
+        }
+    }
+
+/* =====================================
+   TABLA DE COTIZACIONES
+===================================== */
+
+#tablaCotizaciones {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Encabezado original y generado por DataTables */
+
+#tablaCotizaciones thead th,
+#tablaCotizaciones_wrapper table.dataTable thead th,
+#tablaCotizaciones_wrapper .dataTables_scrollHead thead th,
+#tablaCotizaciones_wrapper .dt-scroll-head thead th {
+    padding: 15px 14px;
+    border-color: #172033 !important;
+    background-color: #172033 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Flechas de ordenamiento */
+
+#tablaCotizaciones_wrapper table.dataTable thead th::before,
+#tablaCotizaciones_wrapper table.dataTable thead th::after {
+    color: #ffffff !important;
+}
+
+/* Celdas */
+
+#tablaCotizaciones tbody td {
+    padding: 14px;
+    border-bottom: 1px solid #edf0f4;
+    color: #4b5563;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+#tablaCotizaciones tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#tablaCotizaciones tbody tr:hover {
+    background-color: #eef5ff;
+}
+
+/* Información del cliente */
+
+.cliente-cotizacion {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 190px;
+}
+
+.cliente-icono {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #e7f1ff;
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cliente-nombre {
+    color: #172033;
+    font-weight: 700;
+}
+
+/* Teléfono y correo */
+
+.dato-contacto {
+    color: #4b5563;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dato-contacto i {
+    margin-right: 5px;
+    color: #0d6efd;
+}
+
+.dato-contacto:hover {
+    color: #0d6efd;
+}
+
+.correo-cotizacion {
+    display: inline-block;
+    max-width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+/* Vehículo */
+
+.vehiculo-cotizado {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 180px;
+    color: #172033;
+    font-weight: 600;
+}
+
+.vehiculo-cotizado i {
+    color: #0d6efd;
+}
+
+/* Fecha */
+
+.fecha-cotizacion {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.fecha-cotizacion i {
+    color: #0d6efd;
+}
+
+/* Contenedor de DataTables */
+
+#tablaCotizaciones_wrapper {
+    padding: 18px;
+}
+
+#tablaCotizaciones_wrapper .dt-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+#tablaCotizaciones_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+
+#tablaCotizaciones_wrapper .dataTables_filter label {
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#tablaCotizaciones_wrapper .dataTables_filter input {
+    height: 39px;
+    min-width: 230px;
+    margin-left: 8px;
+    padding: 7px 12px;
+    border: 1px solid #d5dbe3;
+    border-radius: 8px;
+    outline: none;
+}
+
+#tablaCotizaciones_wrapper .dataTables_filter input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.14);
+}
+
+/* Paginación */
+
+#tablaCotizaciones_wrapper .dataTables_paginate {
+    padding-top: 12px;
+}
+
+#tablaCotizaciones_wrapper .dataTables_paginate .paginate_button {
+    min-width: 36px;
+    height: 36px;
+    margin: 0 3px;
+    padding: 7px 11px !important;
+    border: 1px solid #dce1e7 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: #495057 !important;
+    box-shadow: none !important;
+}
+
+#tablaCotizaciones_wrapper .dataTables_paginate .paginate_button:hover {
+    border-color: #0d6efd !important;
+    background: #e7f1ff !important;
+    color: #0d6efd !important;
+}
+
+#tablaCotizaciones_wrapper .dataTables_paginate .paginate_button.current,
+#tablaCotizaciones_wrapper .dataTables_paginate .paginate_button.current:hover {
+    border-color: #0d6efd !important;
+    background: #0d6efd !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+
+    #tablaCotizaciones_wrapper {
+        padding: 12px;
+    }
+
+    #tablaCotizaciones_wrapper .dt-buttons {
+        width: 100%;
+    }
+
+    #tablaCotizaciones_wrapper .dt-button {
+        flex: 1;
+        font-size: 12px;
+    }
+
+    #tablaCotizaciones_wrapper .dataTables_filter {
+        float: none;
+        text-align: left;
+    }
+
+    #tablaCotizaciones_wrapper .dataTables_filter label,
+    #tablaCotizaciones_wrapper .dataTables_filter input {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #tablaCotizaciones_wrapper .dataTables_filter input {
+        min-width: 100%;
+        margin-top: 6px;
+    }
+
+    #tablaCotizaciones_wrapper .dataTables_info,
+    #tablaCotizaciones_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+}
+/* =====================================
+   TABLA DE SOLICITUDES
+===================================== */
+
+#tablaSolicitudes {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Encabezado original y generado por DataTables */
+
+#tablaSolicitudes thead th,
+#tablaSolicitudes_wrapper table.dataTable thead th,
+#tablaSolicitudes_wrapper .dataTables_scrollHead thead th,
+#tablaSolicitudes_wrapper .dt-scroll-head thead th {
+    padding: 15px 14px;
+    border-color: #172033 !important;
+    background-color: #172033 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#tablaSolicitudes_wrapper table.dataTable thead th::before,
+#tablaSolicitudes_wrapper table.dataTable thead th::after {
+    color: #ffffff !important;
+}
+
+/* Cuerpo de la tabla */
+
+#tablaSolicitudes tbody td {
+    padding: 14px;
+    border-bottom: 1px solid #edf0f4;
+    color: #4b5563;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+#tablaSolicitudes tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#tablaSolicitudes tbody tr:hover {
+    background-color: #eef5ff;
+}
+
+/* Cliente */
+
+.cliente-solicitud {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 190px;
+}
+
+.cliente-icono {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #e7f1ff;
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cliente-nombre {
+    color: #172033;
+    font-weight: 700;
+}
+
+/* Teléfono y correo */
+
+.dato-contacto {
+    color: #4b5563;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dato-contacto i {
+    margin-right: 5px;
+    color: #0d6efd;
+}
+
+.dato-contacto:hover {
+    color: #0d6efd;
+}
+
+.correo-solicitud {
+    display: inline-block;
+    max-width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+/* Monto */
+
+.monto-solicitud {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 7px;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Fecha */
+
+.fecha-solicitud {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.fecha-solicitud i {
+    color: #0d6efd;
+}
+
+/* DataTables */
+
+#tablaSolicitudes_wrapper {
+    padding: 18px;
+}
+
+#tablaSolicitudes_wrapper .dt-buttons {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(130px, 1fr));
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+#tablaSolicitudes_wrapper .dt-buttons .dt-button {
+    width: 100%;
+    min-height: 38px;
+    margin: 0;
+    border: none !important;
+    border-radius: 5px;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+#tablaSolicitudes_wrapper .btn-reporte-dia {
+    background: #0d6efd !important;
+}
+
+#tablaSolicitudes_wrapper .btn-reporte-semana {
+    background: #6f42c1 !important;
+}
+
+#tablaSolicitudes_wrapper .btn-reporte-dia:hover {
+    background: #0b5ed7 !important;
+}
+
+#tablaSolicitudes_wrapper .btn-reporte-semana:hover {
+    background: #59359a !important;
+}
+
+/* Buscador */
+
+#tablaSolicitudes_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+
+#tablaSolicitudes_wrapper .dataTables_filter label {
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#tablaSolicitudes_wrapper .dataTables_filter input {
+    min-width: 230px;
+    height: 39px;
+    margin-left: 8px;
+    padding: 7px 12px;
+    border: 1px solid #d5dbe3;
+    border-radius: 8px;
+    outline: none;
+}
+
+#tablaSolicitudes_wrapper .dataTables_filter input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.14);
+}
+
+/* Paginación */
+
+#tablaSolicitudes_wrapper .dataTables_paginate {
+    padding-top: 12px;
+}
+
+#tablaSolicitudes_wrapper .dataTables_paginate .paginate_button {
+    min-width: 36px;
+    height: 36px;
+    margin: 0 3px;
+    padding: 7px 11px !important;
+    border: 1px solid #dce1e7 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: #495057 !important;
+    box-shadow: none !important;
+}
+
+#tablaSolicitudes_wrapper .dataTables_paginate .paginate_button:hover {
+    border-color: #0d6efd !important;
+    background: #e7f1ff !important;
+    color: #0d6efd !important;
+}
+
+#tablaSolicitudes_wrapper .dataTables_paginate .paginate_button.current,
+#tablaSolicitudes_wrapper .dataTables_paginate .paginate_button.current:hover {
+    border-color: #0d6efd !important;
+    background: #0d6efd !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 992px) {
+
+    #tablaSolicitudes_wrapper .dt-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+
+    #tablaSolicitudes_wrapper {
+        padding: 12px;
+    }
+
+    #tablaSolicitudes_wrapper .dt-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    #tablaSolicitudes_wrapper .dataTables_filter {
+        float: none;
+        text-align: left;
+    }
+
+    #tablaSolicitudes_wrapper .dataTables_filter label,
+    #tablaSolicitudes_wrapper .dataTables_filter input {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #tablaSolicitudes_wrapper .dataTables_filter input {
+        min-width: 100%;
+        margin-top: 6px;
+    }
+
+    #tablaSolicitudes_wrapper .dataTables_info,
+    #tablaSolicitudes_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+}
+    .card-reportes {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+    }
+
+    .card-header.reporte {
+        padding: 18px 22px;
+        color: white;
+        background-color: #0d6efd;
+    }
+
+    .titulo-grafica {
+        margin-bottom: 20px;
+        font-weight: 700;
+        text-align: center;
+        color: #212529;
+    }
+
+    .grafica {
+        position: relative;
+        width: 100%;
+        height: 350px;
+    }
+
+    .grafica-lineal {
+        position: relative;
+        width: 100%;
+        height: 400px;
+    }
+
+    .estado-actualizacion {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .indicador-estado {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background-color: #198754;
+    }
+
+    .indicador-estado.actualizando {
+        background-color: #ffc107;
+    }
+
+    .indicador-estado.error {
+        background-color: #dc3545;
+    }
+
+    .tabla-reporte th,
+    .tabla-reporte td {
+        vertical-align: middle;
+    }
+
+    @media (max-width: 768px) {
+        .card-header.reporte {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 12px;
+        }
+
+        .grafica {
+            height: 300px;
+        }
+
+        .grafica-lineal {
+            height: 320px;
+        }
+    }

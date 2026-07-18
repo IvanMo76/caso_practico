@@ -1,0 +1,271 @@
+{%extends 'clientes/base_usuario.html'%}
+{%block contenido%}
+<section class="py-5 bg-light">
+  <div class="container">
+
+    <div class="row align-items-center g-5">
+
+      <!-- Información principal -->
+      <div class="col-lg-6">
+        <span class="badge bg-danger mb-3">Crédito personal</span>
+
+        <h1 class="fw-bold display-5 text-dark">
+          Transforma tus metas en realidad
+        </h1>
+
+        <p class="lead text-muted mt-3">
+          Obtén el financiamiento que necesitas con atención personalizada,
+          mensualidades accesibles y procesos rápidos.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="https://wa.me/527292575122?text=Hola,%20¿podría%20proporcionarme%20más%20información%20por%20favor?%20¡Gracias!"
+            target="_blank" class="btn btn-danger btn-lg">
+            Solicitar información
+          </a>
+
+          <a href="#" class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#modalCredito">
+            Cotizar ahora
+          </a>
+              {% include 'clientes/modal_credito/solicitud_credito.html' %}
+
+        </div>
+
+        <div class="mt-4">
+          <img src="/static/image/finan.jpg" class="img-fluid rounded-4 shadow"
+            alt="Persona recibiendo asesoría financiera">
+        </div>
+      </div>
+
+      <!-- Simulador -->
+      <div class="col-lg-6" id="simulador">
+        <div class="card border-0 shadow-lg rounded-4">
+          <div class="card-body p-4 p-md-5">
+
+            <h3 class="fw-bold text-center mb-2">
+              Simulador de Cotización
+            </h3>
+
+            <p class="text-muted text-center mb-4">
+              Calcula una estimación de tu crédito de forma rápida.
+            </p>
+
+            <form id="cotizacion-form">
+
+              <div class="mb-4">
+                <label for="cantidad" class="form-label fw-semibold">
+                  Cantidad a cotizar
+                </label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text">$</span>
+                  <input type="number" class="form-control" id="cantidad" min="50000" placeholder="Ej. 50000">
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">
+                  Selecciona las mensualidades
+                </label>
+
+                <div class="row g-2">
+                  {% for mes in [6, 12, 18, 48, 60, 72, 84, 96, 108, 120] %}
+                  <div class="col-6 col-md-4">
+                    <input type="radio" class="btn-check" name="mensualidades" id="mes{{ mes }}" value="{{ mes }}">
+                    <label class="btn btn-outline-danger w-100" for="mes{{ mes }}">
+                      {{ mes }} meses
+                    </label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="buro" class="form-label fw-semibold">
+                  Buró de crédito
+                </label>
+                <select class="form-select form-select-lg" id="buro">
+                  <option value="bueno">Bueno</option>
+                  <option value="regular">Regular</option>
+                  <option value="malo">Malo</option>
+                </select>
+              </div>
+
+              <div class="d-grid">
+                <button type="button" class="btn btn-danger btn-lg" onclick="calcularCotizacion()">
+                  Calcular cotización
+                </button>
+              </div>
+
+              <div id="resultado-cotizacion" class="mt-4"></div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Requisitos y beneficios -->
+<section class="py-5">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Requisitos y beneficios</h2>
+      <p class="text-muted">
+        Conoce la documentación necesaria y las ventajas de solicitar tu crédito.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-lg-6">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+          <div class="card-body p-4">
+            <h4 class="fw-bold mb-4 text-danger">
+              Requisitos
+            </h4>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Identificación oficial vigente</li>
+              <li class="list-group-item">Acta de nacimiento</li>
+              <li class="list-group-item">CURP y RFC</li>
+              <li class="list-group-item">Comprobante de domicilio</li>
+              <li class="list-group-item">Comprobantes de ingresos</li>
+              <li class="list-group-item">
+                Identificación oficial de tres referencias personales
+              </li>
+              <li class="list-group-item">Un beneficiario mayor de edad</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+          <div class="card-body p-4">
+            <h4 class="fw-bold mb-4 text-danger">
+              Beneficios
+            </h4>
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Sin penalización por pronto pago o liquidación anticipada
+              </li>
+              <li class="list-group-item">Flexibilidad en buró de crédito</li>
+              <li class="list-group-item">Tasa de interés fija anual</li>
+              <li class="list-group-item">Mensualidad congelada</li>
+              <li class="list-group-item">Seguro por desempleo</li>
+              <li class="list-group-item">Sin anualidades</li>
+              <li class="list-group-item">Seguro de vida</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</section>
+
+<!-- SweetAlert2: elimina esta línea si ya lo cargas en base_usuario.html -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Notificaciones enviadas desde Flask -->
+{% with mensajes = get_flashed_messages(with_categories=true) %}
+  {% if mensajes %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+
+        const mensajes = {{ mensajes | tojson }};
+        const [categoria, mensaje] = mensajes[0];
+
+        const configuraciones = {
+          success: {
+            icon: "success",
+            title: "¡Solicitud enviada!",
+            confirmButtonText: "Aceptar"
+          },
+          warning: {
+            icon: "warning",
+            title: "Verifica la información",
+            confirmButtonText: "Entendido"
+          },
+          error: {
+            icon: "error",
+            title: "No se pudo enviar",
+            confirmButtonText: "Aceptar"
+          }
+        };
+
+        const configuracion =
+          configuraciones[categoria] || configuraciones.error;
+
+        Swal.fire({
+          icon: configuracion.icon,
+          title: configuracion.title,
+          text: mensaje,
+          confirmButtonText: configuracion.confirmButtonText,
+          confirmButtonColor: "#8b0d24",
+          allowOutsideClick: false
+        });
+
+      });
+    </script>
+  {% endif %}
+{% endwith %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const formulario = document.getElementById("formSolicitudCredito");
+    const montoVisual = document.getElementById("montoCreditoVisual");
+    const montoReal = document.getElementById("montoCreditoReal");
+
+    if (!formulario || !montoVisual || !montoReal) {
+        return;
+    }
+
+    montoVisual.addEventListener("input", function () {
+
+        // Eliminar letras, símbolos, espacios y comas
+        const montoLimpio = this.value.replace(/\D/g, "");
+
+        if (montoLimpio === "") {
+            this.value = "";
+            montoReal.value = "";
+            return;
+        }
+
+        const cantidad = parseInt(montoLimpio, 10);
+
+        // Mostrar la cantidad con separadores de miles
+        this.value = cantidad.toLocaleString("es-MX");
+
+        // Enviar a Flask la cantidad sin comas
+        montoReal.value = cantidad;
+    });
+
+    formulario.addEventListener("submit", function (event) {
+
+        const cantidad = parseInt(montoReal.value, 10);
+
+        if (!cantidad || cantidad < 50000) {
+            event.preventDefault();
+
+            Swal.fire({
+                icon: "warning",
+                title: "Monto no válido",
+                text: "El monto solicitado debe ser mayor o igual a $50,000 MXN.",
+                confirmButtonText: "Entendido",
+                confirmButtonColor: "#8b0d24"
+            });
+
+            montoVisual.focus();
+        }
+    });
+
+});
+</script>
+{%endblock%}

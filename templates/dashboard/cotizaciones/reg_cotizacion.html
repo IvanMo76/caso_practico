@@ -1,0 +1,81 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalCotizacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header ">
+                <h4 class="modal-title" id="modalCotizacionLabel">
+                    Agregar Cotización
+                </h4>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="/agregar_cotizacion_auto" method="POST">
+
+                <div class="modal-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Vehículo</label>
+                            <select name="id_auto" class="form-control" required>
+                                <option value="">Selecciona un vehículo</option>
+
+                                {% for auto in autos %}
+                                <option value="{{ auto.id_auto }}">
+                                    {{ auto.marca }} {{ auto.modelo }} {{ auto.anio }} - ${{ "{:,.2f}".format(auto.precio_unidad) }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre(s)</label>
+                            <input type="text" class="form-control" name="nombre_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Apellido paterno</label>
+                            <input type="text" class="form-control" name="ap_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Apellido materno</label>
+                            <input type="text" class="form-control" name="am_cliente" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text"
+                                   class="form-control solo-numeros"
+                                   name="celular_cliente"
+                                   maxlength="10"
+                                   inputmode="numeric"
+                                   placeholder="ejem: 7122679807">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" name="correo_cliente" required>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar cotización
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

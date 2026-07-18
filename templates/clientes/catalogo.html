@@ -1,0 +1,80 @@
+{%extends 'clientes/base_usuario.html'%}
+{%block contenido%}
+
+<section class="catalogo-page">
+
+    <div class="catalogo-header">
+        <h1>Todos los vehículos</h1>
+        <p>Encuentra el vehículo ideal para ti.</p>
+    </div>
+
+    <div class="catalogo-tabs">
+        <button class="catalogo-tab active" data-filter="todos">DESTACADOS</button>
+        <button class="catalogo-tab" data-filter="sedan">AUTOS</button>
+        <button class="catalogo-tab" data-filter="suv">CROSSOVERS Y SUVS</button>
+        <button class="catalogo-tab" data-filter="pic-kup">PICK-UPS Y COMERCIALES</button>
+        <button class="catalogo-tab" data-filter="seminuevo">SEMINUEVOS</button>
+    </div>
+    <select id="ordenPrecio" class="orden-select">
+        <option value="destacados">Destacados</option>
+        <option value="menor-mayor">Menor Precio</option>
+        <option value="mayor-menor">Mayor Precio</option>
+    </select>
+    <div class="catalogo-grid">
+
+        {% for auto in autos %}
+        <div class="catalogo-card" data-tipo="{{ auto.tipo|lower }}" data-precio="{{ auto.precio_unidad }}">
+
+            <a href="{{ url_for('info_auto', id_auto=auto.id_auto) }}">
+
+                {% set imagenes = auto.imagen.split(',') %}
+
+                <div id="carouselCatalogo{{ auto.id_auto }}" class="carousel slide catalogo-carousel"
+                    data-bs-ride="carousel" data-bs-interval="2500" data-bs-pause="false">
+
+                    <div class="carousel-inner">
+
+                        {% for imagen in imagenes %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='image/catalogo/' + imagen.strip()) }}"
+                                class="d-block w-100" alt="{{ auto.marca }} {{ auto.modelo }}">
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <h3>{{ auto.marca }} {{ auto.modelo }}</h3>
+
+                <p>Desde ${{ auto.precio_unidad }}</p>
+
+            </a>
+
+            <h6>
+                El precio publicado aplica para el vehículo
+                {{ auto.marca }} {{ auto.modelo }} {{ auto.anio }}
+                y es de carácter informativo, sujeto a disponibilidad,
+                vigencia y cambios sin previo aviso. La autorización del
+                financiamiento dependerá de la evaluación y aprobación
+                crediticia de cada solicitante. Las condiciones del crédito,
+                incluyendo tasa de interés, plazo, monto y enganche,
+                podrán variar según el perfil del cliente. Aplican términos,
+                condiciones y restricciones.
+            </h6>
+
+            <div class="catalogo-actions">
+                <a href="{{ url_for('info_auto', id_auto=auto.id_auto) }}" class="btn btn-outline-dark">
+                    Ver detalles
+                </a>
+
+                
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}

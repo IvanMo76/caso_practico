@@ -1,0 +1,117 @@
+<div class="modal fade" id="modalCredito" tabindex="-1" aria-labelledby="modalCreditoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <!-- Encabezado -->
+            <div class="modal-header bg-dark text-white">
+                <h4 class="modal-title" id="modalCreditoLabel">
+                    <i class="fa-solid fa-file-signature me-2"></i>
+                    Solicitud de Crédito
+                </h4>
+
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Formulario -->
+            <form action="/solicitud_credito" method="POST" id="formSolicitudCredito">
+
+                <div class="modal-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre(s)</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="nombre_cliente"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Apellido paterno</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="ap_cliente"
+                                   required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Apellido materno</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="am_cliente"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email"
+                                   class="form-control"
+                                   name="correo_cliente"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel"
+                                   class="form-control"
+                                   name="celular_cliente"
+                                   required>
+                        </div>
+
+                       
+
+                        <div class="col-md-6">
+                            <label class="form-label">Monto solicitado</label>
+
+                            <input type="text"
+               class="form-control"
+               id="montoCreditoVisual"
+               inputmode="numeric"
+               autocomplete="off"
+               placeholder="50,000"
+               required>
+
+        <!-- Campo enviado a Flask sin comas -->
+        <input type="hidden"
+               id="montoCreditoReal"
+               name="monto">
+                        </div>
+
+                        
+
+                        
+
+                        
+
+                    </div>
+
+                </div>
+
+                <!-- Botones -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-dark">
+
+                        <i class="fa-solid fa-paper-plane me-2"></i>
+
+                        Enviar Solicitud
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

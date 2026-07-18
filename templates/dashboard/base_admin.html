@@ -17,6 +17,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <!-- Botones Exportación -->
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+
 </head>
 
 <body>
@@ -82,7 +83,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             </li>
 
             <li class="nav-item">
-                <a href="#"
+                <a href="{{url_for('cotizaciones_autos')}}"
                     class="nav-link text-white">
                     <i class="fas fa-file-invoice-dollar me-2"></i>
                     Cotizaciones de autos
@@ -90,7 +91,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             </li>
 
             <li class="nav-item">
-                <a href="#"
+                <a href="{{url_for('solicitudes_credito')}}"
                     class="nav-link text-white">
                     <i class="fas fa-hand-holding-dollar me-2"></i>
                     Solicitudes de Crédito
@@ -98,7 +99,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             </li>
 
             <li class="nav-item">
-                <a href="#"
+                <a href="{{url_for('reporte_vehiculos')}}"
                     class="nav-link text-white">
                     <i class="fas fa-chart-pie me-2"></i>
                     Graficas
@@ -115,7 +116,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
 <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
@@ -138,6 +139,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
+<script src="/static/js/js_admin.js"></script>
+
 </body>
+
 
 </html>

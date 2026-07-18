@@ -1,30 +1,57 @@
-<div class="modal" id="miModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-  
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Agregar Nuevo Auto</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-  
-        <!-- Modal Body - Formulario para agregar auto -->
-        <div class="modal-body">
-          <form action="/subir_imagen" method="post" enctype="multipart/form-data">
-  
-            <div class="form-group">
-              <label for="imagen">imagen:</label>
-              <input type="file" id="imagen" name="imagen">
-  
-            </div>
-  
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Agregar</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-  </div>
-        </form>
+<div class="modal fade" id="miModal" tabindex="-1"
+     aria-labelledby="miModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="miModalLabel">
+          Agregar nueva imagen
+        </h4>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar">
+        </button>
       </div>
-  
+
+      <div class="modal-body">
+
+        <form action="/subir_imagen"
+              method="POST"
+              enctype="multipart/form-data">
+
+          <div class="mb-3">
+            <label for="imagen" class="form-label">
+              Imagen:
+            </label>
+
+            <input type="file"
+                   class="form-control"
+                   id="imagen"
+                   name="imagen"
+                   accept="image/*"
+                   required>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+              Cancelar
+            </button>
+
+            <button type="submit" class="btn btn-primary">
+              Agregar
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
     </div>
   </div>
-  </div>
+</div>

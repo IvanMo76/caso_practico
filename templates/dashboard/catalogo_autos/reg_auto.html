@@ -1,60 +1,543 @@
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Modal para agregar vehículo -->
+<div class="modal fade"
+     id="exampleModal"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
         <div class="modal-content">
-            <div class="modal-content">
+
+            <form id="formAgregarAuto"
+                  action="{{ url_for('agregar_auto') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <!-- Encabezado -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Agregar Nuevo Auto</h4>
+
+                    <h4 class="modal-title"
+                        id="exampleModalLabel">
+
+                        <i class="fa-solid fa-car me-2"></i>
+                        Agregar nuevo vehículo
+
+                    </h4>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
                 </div>
+
+                <!-- Contenido -->
                 <div class="modal-body">
-                    <form action="/agregar_auto" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="modelo">Modelo:</label>
-                            <input type="text" class="form-control" id="modelo" name="modelo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="anio" class="titulos">Año:</label>
-                            <select name="anio" class="form-control" id="anio" required>
-                                <option value="">Selcciona el año</option>
-                                <option value="2015">2015</option>
-                                <option value="2016">2016</option>
-                                <option value="2017">2017</option>
-                                <option value="2018">2018</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
+
+                    <div class="row">
+
+                        <!-- Marca -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="marca"
+                                   class="form-label">
+                                Marca:
+                            </label>
+
+                            <select name="marca"
+                                    class="form-select"
+                                    id="marca"
+                                    required>
+
+                                <option value="">
+                                    Selecciona la marca
+                                </option>
+
+                                <option value="Astera Motors">Astera Motors</option>
+                                <option value="Veltrix Auto">Veltrix Auto</option>
+                                <option value="Novaris">Novaris</option>
+                                <option value="Altiora">Altiora</option>
+                                <option value="Zentari">Zentari</option>
+                                <option value="Falcora">Falcora</option>
+                                <option value="Kronvia">Kronvia</option>
+                                <option value="Solvian">Solvian</option>
+
                             </select>
-                            <label for="km" class="titulos">Km:</label>
-                            <input type="text" class="form-control" id="km" name="km" required>
+
                         </div>
 
+                        <!-- Modelo -->
+                        <div class="col-md-6 mb-3">
 
-                        <div class="form-group">
-                            <label for="marca">Marca:</label>
-                            <input type="text" class="form-control" id="marca" name="marca" required>
-                            <div class="form-group">
-                                <label for="descripcion">Descripcion:</label>
-                                <textarea name="descripcion" class="form-control" id="descripcion"></textarea>
+                            <label for="modelo"
+                                   class="form-label">
+                                Modelo:
+                            </label>
+
+                            <select name="modelo"
+                                    class="form-select"
+                                    id="modelo"
+                                    disabled
+                                    required>
+
+                                <option value="">
+                                    Primero selecciona una marca
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- Año -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="anio"
+                                   class="form-label">
+                                Año:
+                            </label>
+
+                            <select name="anio"
+                                    class="form-select"
+                                    id="anio"
+                                    required>
+
+                                <option value="">
+                                    Selecciona el año
+                                </option>
+
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- Kilometraje -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="km"
+                                   class="form-label">
+                                Kilometraje:
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="km"
+                                   name="km"
+                                   min="0"
+                                   step="1"
+                                   placeholder="Ejemplo: 15000"
+                                   required>
+
+                        </div>
+
+                        <!-- Tipo -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="tipo"
+                                   class="form-label">
+                                Tipo de vehículo:
+                            </label>
+
+                            <select name="tipo"
+                                    class="form-select"
+                                    id="tipo"
+                                    required>
+
+                                <option value="">
+                                    Selecciona el tipo
+                                </option>
+
+                                <option value="sedan">Sedán</option>
+                                <option value="suv">SUV</option>
+                                <option value="pickup">Pickup</option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="precio_unidad"
+                                   class="form-label">
+                                Precio en lista:
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   id="precio_unidad"
+                                   name="precio_unidad"
+                                   placeholder="$0"
+                                   inputmode="numeric"
+                                   autocomplete="off"
+                                   required>
+
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="col-12 mb-3">
+
+                            <label for="descripcion"
+                                   class="form-label">
+                                Descripción:
+                            </label>
+
+                            <textarea name="descripcion"
+                                      class="form-control"
+                                      id="descripcion"
+                                      rows="4"
+                                      placeholder="Escribe las características principales del vehículo"></textarea>
+
+                        </div>
+
+                        <!-- Imágenes -->
+                        <div class="col-12 mb-3">
+
+                            <label for="imagen"
+                                   class="form-label">
+                                Imágenes:
+                            </label>
+
+                            <input type="file"
+                                   id="imagen"
+                                   name="imagen"
+                                   class="form-control"
+                                   accept="image/jpeg,image/png,image/webp"
+                                   multiple
+                                   required>
+
+                            <div class="form-text">
+                                Puedes seleccionar una o varias imágenes en formato
+                                JPG, PNG o WEBP.
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="precio_unidad">Precio en lista:</label>
-                            <input type="number" class="form-control" id="precio_unidad" name="precio_unidad" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="imagen">Imagen:</label>
-                            <input type="file" id="imagen" name="imagen" multiple onchange="handleImageSelection(event)"
-                                required>
-                            <div id="imagenPreview"></div>
-                            <textarea id="imageList" name="imageList" style="display: none;"></textarea>
+
+                            <!-- Vista previa -->
+                            <div id="imagenPreview"
+                                 class="d-flex flex-wrap gap-2 mt-3">
+                            </div>
+
+                            <!-- Lista de nombres de imágenes -->
+                            <textarea id="imageList"
+                                      name="imageList"
+                                      hidden></textarea>
+
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Agregar Auto</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+
                 </div>
-                </form>
-            </div>
+
+                <!-- Botones -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="fa-solid fa-xmark me-1"></i>
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Agregar vehículo
+
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
+
     </div>
+
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modelosPorMarca = {
+        "Astera Motors": [
+            "Vela",
+            "Nebula",
+            "Celsa",
+            "Arion",
+            "Kairo",
+            "Terris",
+            "Bravon",
+            "Cargus"
+        ],
+
+        "Veltrix Auto": [
+            "Sfera",
+            "Nexo",
+            "Vantis",
+            "Prisma X",
+            "Altair",
+            "Rovera",
+            "Torvik",
+            "Maxtrail"
+        ],
+
+        "Novaris": [
+            "Liria",
+            "Vectora",
+            "Seren",
+            "Atria",
+            "Corsen",
+            "Taeron",
+            "Vigra",
+            "Savon"
+        ],
+
+        "Altiora": [
+            "Corven",
+            "Yarix",
+            "Camira",
+            "Raizen",
+            "Avelon",
+            "Hilven",
+            "Targon"
+        ],
+
+        "Zentari": [
+            "Lumo",
+            "Aster",
+            "Orionis",
+            "Kyra",
+            "Nexar",
+            "Eikon",
+            "Teryx"
+        ],
+
+        "Falcora": [
+            "Fenix",
+            "Vesta",
+            "Kron",
+            "Esfera",
+            "Exora",
+            "Rakon",
+            "Titan 150"
+        ],
+
+        "Kronvia": [
+            "Riva",
+            "Forten",
+            "Kora 3",
+            "Seltra",
+            "Sporia",
+            "Sorvia"
+        ],
+
+        "Solvian": [
+            "Mini V10",
+            "Acentra",
+            "Elion",
+            "Crevia",
+            "Tursen",
+            "Santara"
+        ]
+    };
+
+
+    const modalAgregarAuto =
+        document.getElementById("exampleModal");
+
+    const formulario =
+        document.getElementById("formAgregarAuto");
+
+    const selectMarca =
+        document.getElementById("marca");
+
+    const selectModelo =
+        document.getElementById("modelo");
+
+    const inputPrecio =
+        document.getElementById("precio_unidad");
+
+    const inputImagen =
+        document.getElementById("imagen");
+
+    const imagenPreview =
+        document.getElementById("imagenPreview");
+
+    const imageList =
+        document.getElementById("imageList");
+
+
+    /*
+     * CARGAR LOS MODELOS SEGÚN LA MARCA
+     */
+    selectMarca.addEventListener("change", function () {
+
+        const marcaSeleccionada = this.value;
+
+        selectModelo.innerHTML =
+            '<option value="">Selecciona el modelo</option>';
+
+        if (!modelosPorMarca[marcaSeleccionada]) {
+
+            selectModelo.innerHTML =
+                '<option value="">Primero selecciona una marca</option>';
+
+            selectModelo.disabled = true;
+
+            return;
+        }
+
+        selectModelo.disabled = false;
+
+        modelosPorMarca[marcaSeleccionada].forEach(
+            function (modelo) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = modelo;
+                option.textContent = modelo;
+
+                selectModelo.appendChild(option);
+            }
+        );
+    });
+
+
+    /*
+     * FORMATEAR EL PRECIO CON SEPARADORES DE MILES
+     */
+    inputPrecio.addEventListener("input", function () {
+
+        const valorNumerico =
+            this.value.replace(/\D/g, "");
+
+        if (valorNumerico === "") {
+            this.value = "";
+            return;
+        }
+
+        this.value =
+            "$" + Number(valorNumerico).toLocaleString("es-MX");
+    });
+
+
+    /*
+     * MOSTRAR LAS IMÁGENES SELECCIONADAS
+     */
+    inputImagen.addEventListener("change", function () {
+
+        const archivos =
+            Array.from(this.files);
+
+        imagenPreview.innerHTML = "";
+        imageList.value = "";
+
+        if (archivos.length === 0) {
+            return;
+        }
+
+        imageList.value = archivos
+            .map(function (archivo) {
+                return archivo.name;
+            })
+            .join(",");
+
+        archivos.forEach(function (archivo, indice) {
+
+            if (!archivo.type.startsWith("image/")) {
+                return;
+            }
+
+            const lector = new FileReader();
+
+            lector.onload = function (evento) {
+
+                const contenedorImagen =
+                    document.createElement("div");
+
+                contenedorImagen.className =
+                    "position-relative border rounded shadow-sm p-1";
+
+                const imagen =
+                    document.createElement("img");
+
+                imagen.src = evento.target.result;
+                imagen.alt = archivo.name;
+                imagen.className = "rounded";
+
+                imagen.style.width = "120px";
+                imagen.style.height = "85px";
+                imagen.style.objectFit = "cover";
+                imagen.style.display = "block";
+
+                const numero =
+                    document.createElement("span");
+
+                numero.textContent = indice + 1;
+
+                numero.className =
+                    "position-absolute top-0 end-0 " +
+                    "badge rounded-pill bg-primary m-1";
+
+                contenedorImagen.appendChild(imagen);
+                contenedorImagen.appendChild(numero);
+                imagenPreview.appendChild(contenedorImagen);
+            };
+
+            lector.readAsDataURL(archivo);
+        });
+    });
+
+
+    /*
+     * VALIDAR Y LIMPIAR EL PRECIO ANTES DE ENVIAR
+     */
+    formulario.addEventListener("submit", function (evento) {
+
+        const precioLimpio =
+            inputPrecio.value.replace(/\D/g, "");
+
+        if (precioLimpio === "") {
+            evento.preventDefault();
+            inputPrecio.focus();
+            return;
+        }
+
+        inputPrecio.value = precioLimpio;
+    });
+
+
+    /*
+     * LIMPIAR EL FORMULARIO AL CERRAR EL MODAL
+     */
+    modalAgregarAuto.addEventListener(
+        "hidden.bs.modal",
+        function () {
+
+            formulario.reset();
+
+            selectModelo.innerHTML =
+                '<option value="">Primero selecciona una marca</option>';
+
+            selectModelo.disabled = true;
+
+            imagenPreview.innerHTML = "";
+            imageList.value = "";
+        }
+    );
+
+});
+</script>

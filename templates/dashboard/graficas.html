@@ -1,0 +1,991 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block admin %}
+
+
+<section style="margin-top: 4em;">
+
+    <div class="container-fluid py-4">
+
+        <div class="card card-reportes">
+
+            <div class="card-header reporte d-flex justify-content-between align-items-center">
+
+                <div>
+                    <h4 class="mb-1">
+                        Gráficas de desempeño del sistema
+                    </h4>
+
+                    <small>
+                        La información se actualiza automáticamente cada 5 segundos
+                    </small>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-light btn-sm fw-bold"
+                    onclick="generarPDF()">
+
+                    <i class="fa-solid fa-file-pdf me-1"></i>
+                    Generar PDF
+                </button>
+
+            </div>
+
+            <div class="card-body p-4">
+
+                <div class="estado-actualizacion mb-4">
+
+                    <span
+                        id="indicadorEstado"
+                        class="indicador-estado">
+                    </span>
+
+                    <span id="textoEstado">
+                        Información cargada
+                    </span>
+
+                    <span id="ultimaActualizacion"></span>
+
+                </div>
+
+                <!-- AUTOS -->
+                <div class="row">
+
+                    <!-- AUTOS MÁS COTIZADOS -->
+                    <div class="col-lg-6 mb-4">
+
+                        <h5 class="titulo-grafica">
+                            Autos más cotizados
+                        </h5>
+
+                        <div class="grafica">
+                            <canvas id="masVendidos"></canvas>
+                        </div>
+
+                        <div class="table-responsive mt-4">
+
+                            <table
+                                class="table table-bordered table-striped table-hover tabla-reporte"
+                                id="tablaMasVendidos">
+
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Auto</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for auto in autosMas %}
+                                    <tr>
+                                        <td>
+                                            {{ auto.marca }} {{ auto.modelo }}
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{ auto.total }}
+                                        </td>
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            class="text-center text-muted">
+
+                                            No hay cotizaciones registradas
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <!-- AUTOS MENOS COTIZADOS -->
+                    <div class="col-lg-6 mb-4">
+
+                        <h5 class="titulo-grafica">
+                            Autos menos cotizados
+                        </h5>
+
+                        <div class="grafica">
+                            <canvas id="menosVendidos"></canvas>
+                        </div>
+
+                        <div class="table-responsive mt-4">
+
+                            <table
+                                class="table table-bordered table-striped table-hover tabla-reporte"
+                                id="tablaMenosVendidos">
+
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Auto</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for auto in autosMenos %}
+                                    <tr>
+                                        <td>
+                                            {{ auto.marca }} {{ auto.modelo }}
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{ auto.total }}
+                                        </td>
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            class="text-center text-muted">
+
+                                            No hay cotizaciones registradas
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- SOLICITUDES DE CRÉDITO -->
+                <div class="row">
+
+                    <div class="col-12">
+
+                        <h5 class="titulo-grafica">
+                            Captación de solicitudes de crédito personal
+                        </h5>
+
+                        <div class="grafica-lineal">
+                            <canvas id="solicitudesCredito"></canvas>
+                        </div>
+
+                        <div class="table-responsive mt-4">
+
+                            <table
+                                class="table table-bordered table-striped table-hover tabla-reporte"
+                                id="tablaSolicitudesCredito">
+
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th class="text-center">
+                                            Cantidad de solicitudes
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for solicitud in solicitudes %}
+                                    <tr>
+                                        <td>
+                                            {% if solicitud.fecha.strftime is defined %}
+                                                {{ solicitud.fecha.strftime('%d/%m/%Y') }}
+                                            {% else %}
+                                                {{ solicitud.fecha }}
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="text-center">
+                                            {{ solicitud.total }}
+                                        </td>
+                                    </tr>
+
+                                    {% else %}
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            class="text-center text-muted">
+
+                                            No hay solicitudes registradas
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- DATOS INICIALES GENERADOS POR FLASK -->
+<script id="datosInicialesReporte" type="application/json">
+    {{
+        {
+            "labelsMas": labelsMas,
+            "valoresMas": valoresMas,
+            "labelsMenos": labelsMenos,
+            "valoresMenos": valoresMenos,
+            "fechasSolicitudes": fechasSolicitudes,
+            "totalSolicitudes": totalSolicitudes
+        } | tojson
+    }}
+</script>
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- JSPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- JSPDF AUTOTABLE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /*
+         * =====================================================
+         * DATOS INICIALES
+         * =====================================================
+         */
+
+        const elementoDatos = document.getElementById(
+            "datosInicialesReporte"
+        );
+
+        const datosIniciales = JSON.parse(
+            elementoDatos.textContent
+        );
+
+        const coloresMasCotizados = [
+            "#0d6efd",
+            "#198754",
+            "#ffc107",
+            "#dc3545",
+            "#6f42c1",
+            "#0dcaf0",
+            "#fd7e14",
+            "#20c997"
+        ];
+
+        const coloresMenosCotizados = [
+            "#17a2b8",
+            "#fd7e14",
+            "#6c757d",
+            "#20c997",
+            "#6610f2",
+            "#dc3545",
+            "#ffc107",
+            "#0d6efd"
+        ];
+
+        /*
+         * =====================================================
+         * GRÁFICA DE AUTOS MÁS COTIZADOS
+         * =====================================================
+         */
+
+        window.graficaMasVendidos = new Chart(
+            document.getElementById("masVendidos"),
+            {
+                type: "pie",
+
+                data: {
+                    labels: datosIniciales.labelsMas,
+
+                    datasets: [{
+                        label: "Cotizaciones",
+                        data: datosIniciales.valoresMas,
+                        backgroundColor: coloresMasCotizados,
+                        borderWidth: 2,
+                        borderColor: "#ffffff"
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        },
+
+                        tooltip: {
+                            callbacks: {
+                                label: function (contexto) {
+                                    const etiqueta =
+                                        contexto.label || "Vehículo";
+
+                                    const total =
+                                        contexto.parsed || 0;
+
+                                    return `${etiqueta}: ${total} cotizaciones`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        /*
+         * =====================================================
+         * GRÁFICA DE AUTOS MENOS COTIZADOS
+         * =====================================================
+         */
+
+        window.graficaMenosVendidos = new Chart(
+            document.getElementById("menosVendidos"),
+            {
+                type: "pie",
+
+                data: {
+                    labels: datosIniciales.labelsMenos,
+
+                    datasets: [{
+                        label: "Cotizaciones",
+                        data: datosIniciales.valoresMenos,
+                        backgroundColor: coloresMenosCotizados,
+                        borderWidth: 2,
+                        borderColor: "#ffffff"
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        },
+
+                        tooltip: {
+                            callbacks: {
+                                label: function (contexto) {
+                                    const etiqueta =
+                                        contexto.label || "Vehículo";
+
+                                    const total =
+                                        contexto.parsed || 0;
+
+                                    return `${etiqueta}: ${total} cotizaciones`;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        /*
+         * =====================================================
+         * GRÁFICA DE SOLICITUDES
+         * =====================================================
+         */
+
+        window.graficaSolicitudesCredito = new Chart(
+            document.getElementById("solicitudesCredito"),
+            {
+                type: "line",
+
+                data: {
+                    labels: datosIniciales.fechasSolicitudes,
+
+                    datasets: [{
+                        label: "Solicitudes realizadas",
+                        data: datosIniciales.totalSolicitudes,
+                        borderColor: "#0d6efd",
+                        backgroundColor: "rgba(13, 110, 253, 0.15)",
+                        borderWidth: 3,
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: "#0d6efd",
+                        pointBorderColor: "#ffffff",
+                        pointBorderWidth: 2
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    interaction: {
+                        mode: "index",
+                        intersect: false
+                    },
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+
+                            ticks: {
+                                precision: 0
+                            },
+
+                            title: {
+                                display: true,
+                                text: "Cantidad de solicitudes"
+                            }
+                        },
+
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Fecha"
+                            }
+                        }
+                    },
+
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            }
+        );
+
+        /*
+         * =====================================================
+         * ACTUALIZACIÓN DE GRÁFICAS
+         * =====================================================
+         */
+
+        let actualizandoReporte = false;
+
+        function establecerEstado(tipo, mensaje) {
+            const indicador = document.getElementById(
+                "indicadorEstado"
+            );
+
+            const texto = document.getElementById(
+                "textoEstado"
+            );
+
+            indicador.classList.remove(
+                "actualizando",
+                "error"
+            );
+
+            if (tipo === "actualizando") {
+                indicador.classList.add("actualizando");
+            }
+
+            if (tipo === "error") {
+                indicador.classList.add("error");
+            }
+
+            texto.textContent = mensaje;
+        }
+
+        function mostrarHoraActualizacion() {
+            const fecha = new Date();
+
+            const hora = fecha.toLocaleTimeString(
+                "es-MX",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+
+            document.getElementById(
+                "ultimaActualizacion"
+            ).textContent = `— Última actualización: ${hora}`;
+        }
+
+        function actualizarDatosGrafica(
+            grafica,
+            etiquetas,
+            valores
+        ) {
+            grafica.data.labels = etiquetas || [];
+            grafica.data.datasets[0].data = valores || [];
+
+            /*
+             * "none" actualiza sin repetir la animación
+             * cada cinco segundos.
+             */
+            grafica.update("none");
+        }
+
+        /*
+         * =====================================================
+         * ACTUALIZACIÓN DE TABLAS
+         * =====================================================
+         */
+
+        function actualizarTablaAutos(idTabla, registros) {
+            const cuerpoTabla = document.querySelector(
+                `#${idTabla} tbody`
+            );
+
+            if (!cuerpoTabla) {
+                return;
+            }
+
+            cuerpoTabla.innerHTML = "";
+
+            if (!registros || registros.length === 0) {
+                const fila = document.createElement("tr");
+                const celda = document.createElement("td");
+
+                celda.colSpan = 2;
+                celda.className = "text-center text-muted";
+                celda.textContent =
+                    "No hay cotizaciones registradas";
+
+                fila.appendChild(celda);
+                cuerpoTabla.appendChild(fila);
+
+                return;
+            }
+
+            const fragmento = document.createDocumentFragment();
+
+            registros.forEach(function (registro) {
+                const fila = document.createElement("tr");
+
+                const celdaAuto = document.createElement("td");
+                const celdaTotal = document.createElement("td");
+
+                celdaAuto.textContent = registro.auto;
+                celdaTotal.textContent = registro.total;
+                celdaTotal.className = "text-center";
+
+                fila.appendChild(celdaAuto);
+                fila.appendChild(celdaTotal);
+
+                fragmento.appendChild(fila);
+            });
+
+            cuerpoTabla.appendChild(fragmento);
+        }
+
+        function actualizarTablaSolicitudes(registros) {
+            const cuerpoTabla = document.querySelector(
+                "#tablaSolicitudesCredito tbody"
+            );
+
+            if (!cuerpoTabla) {
+                return;
+            }
+
+            cuerpoTabla.innerHTML = "";
+
+            if (!registros || registros.length === 0) {
+                const fila = document.createElement("tr");
+                const celda = document.createElement("td");
+
+                celda.colSpan = 2;
+                celda.className = "text-center text-muted";
+                celda.textContent =
+                    "No hay solicitudes registradas";
+
+                fila.appendChild(celda);
+                cuerpoTabla.appendChild(fila);
+
+                return;
+            }
+
+            const fragmento = document.createDocumentFragment();
+
+            registros.forEach(function (registro) {
+                const fila = document.createElement("tr");
+
+                const celdaFecha =
+                    document.createElement("td");
+
+                const celdaTotal =
+                    document.createElement("td");
+
+                celdaFecha.textContent = registro.fecha;
+                celdaTotal.textContent = registro.total;
+                celdaTotal.className = "text-center";
+
+                fila.appendChild(celdaFecha);
+                fila.appendChild(celdaTotal);
+
+                fragmento.appendChild(fila);
+            });
+
+            cuerpoTabla.appendChild(fragmento);
+        }
+
+        /*
+         * =====================================================
+         * CONSULTA A LA API
+         * =====================================================
+         */
+
+        async function actualizarReporte() {
+            /*
+             * Evita que se ejecuten varias peticiones al mismo
+             * tiempo si el servidor tarda más de cinco segundos.
+             */
+            if (actualizandoReporte) {
+                return;
+            }
+
+            /*
+             * No consulta mientras la pestaña está oculta.
+             */
+            if (document.hidden) {
+                return;
+            }
+
+            actualizandoReporte = true;
+
+            establecerEstado(
+                "actualizando",
+                "Actualizando información..."
+            );
+
+            try {
+                const url =
+                    "{{ url_for('api_reporte_vehiculos') }}";
+
+                const respuesta = await fetch(url, {
+                    method: "GET",
+                    cache: "no-store",
+
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                /*
+                 * Si Flask redirige al login porque terminó
+                 * la sesión, abre la página correspondiente.
+                 */
+                if (respuesta.redirected) {
+                    window.location.href = respuesta.url;
+                    return;
+                }
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        `Error HTTP: ${respuesta.status}`
+                    );
+                }
+
+                const datos = await respuesta.json();
+
+                console.log(
+                    "Reporte actualizado:",
+                    datos
+                );
+
+                actualizarDatosGrafica(
+                    window.graficaMasVendidos,
+                    datos.labelsMas,
+                    datos.valoresMas
+                );
+
+                actualizarDatosGrafica(
+                    window.graficaMenosVendidos,
+                    datos.labelsMenos,
+                    datos.valoresMenos
+                );
+
+                actualizarDatosGrafica(
+                    window.graficaSolicitudesCredito,
+                    datos.fechasSolicitudes,
+                    datos.totalSolicitudes
+                );
+
+                actualizarTablaAutos(
+                    "tablaMasVendidos",
+                    datos.autosMas
+                );
+
+                actualizarTablaAutos(
+                    "tablaMenosVendidos",
+                    datos.autosMenos
+                );
+
+                actualizarTablaSolicitudes(
+                    datos.solicitudes
+                );
+
+                establecerEstado(
+                    "correcto",
+                    "Información actualizada"
+                );
+
+                mostrarHoraActualizacion();
+
+            } catch (error) {
+                console.error(
+                    "No se pudo actualizar el reporte:",
+                    error
+                );
+
+                establecerEstado(
+                    "error",
+                    "No se pudo actualizar la información"
+                );
+
+            } finally {
+                actualizandoReporte = false;
+            }
+        }
+
+        /*
+         * Primera consulta al abrir la página.
+         */
+        actualizarReporte();
+
+        /*
+         * Consulta automática cada cinco segundos.
+         */
+        window.intervaloReporte = setInterval(
+            actualizarReporte,
+            5000
+        );
+
+        /*
+         * Actualiza inmediatamente cuando el usuario
+         * vuelve a la pestaña del navegador.
+         */
+        document.addEventListener(
+            "visibilitychange",
+            function () {
+                if (!document.hidden) {
+                    actualizarReporte();
+                }
+            }
+        );
+    });
+
+    /*
+     * =========================================================
+     * GENERACIÓN DEL PDF
+     * =========================================================
+     */
+
+    function generarPDF() {
+        const { jsPDF } = window.jspdf;
+
+        const pdf = new jsPDF(
+            "p",
+            "mm",
+            "a4"
+        );
+
+        pdf.setFontSize(18);
+
+        pdf.text(
+            "Reporte de vehículos",
+            105,
+            15,
+            {
+                align: "center"
+            }
+        );
+
+        pdf.setFontSize(11);
+
+        pdf.text(
+            "Autos más cotizados, autos menos cotizados y solicitudes de crédito.",
+            105,
+            23,
+            {
+                align: "center"
+            }
+        );
+
+        const imagenMasVendidos = document
+            .getElementById("masVendidos")
+            .toDataURL("image/png", 1.0);
+
+        const imagenMenosVendidos = document
+            .getElementById("menosVendidos")
+            .toDataURL("image/png", 1.0);
+
+        const imagenSolicitudes = document
+            .getElementById("solicitudesCredito")
+            .toDataURL("image/png", 1.0);
+
+        /*
+         * AUTOS MÁS COTIZADOS
+         */
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            "Autos más cotizados",
+            105,
+            35,
+            {
+                align: "center"
+            }
+        );
+
+        pdf.addImage(
+            imagenMasVendidos,
+            "PNG",
+            35,
+            40,
+            140,
+            80
+        );
+
+        pdf.autoTable({
+            html: "#tablaMasVendidos",
+            startY: 130,
+            theme: "grid",
+
+            margin: {
+                left: 30,
+                right: 30
+            },
+
+            headStyles: {
+                fillColor: [13, 110, 253],
+                halign: "center"
+            },
+
+            bodyStyles: {
+                halign: "center"
+            },
+
+            styles: {
+                fontSize: 10,
+                cellPadding: 3
+            }
+        });
+
+        /*
+         * AUTOS MENOS COTIZADOS
+         */
+
+        pdf.addPage();
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            "Autos menos cotizados",
+            105,
+            20,
+            {
+                align: "center"
+            }
+        );
+
+        pdf.addImage(
+            imagenMenosVendidos,
+            "PNG",
+            35,
+            25,
+            140,
+            80
+        );
+
+        pdf.autoTable({
+            html: "#tablaMenosVendidos",
+            startY: 115,
+            theme: "grid",
+
+            margin: {
+                left: 30,
+                right: 30
+            },
+
+            headStyles: {
+                fillColor: [13, 110, 253],
+                halign: "center"
+            },
+
+            bodyStyles: {
+                halign: "center"
+            },
+
+            styles: {
+                fontSize: 10,
+                cellPadding: 3
+            }
+        });
+
+        /*
+         * SOLICITUDES DE CRÉDITO
+         */
+
+        pdf.addPage();
+
+        pdf.setFontSize(14);
+
+        pdf.text(
+            "Solicitudes de crédito por fecha",
+            105,
+            20,
+            {
+                align: "center"
+            }
+        );
+
+        pdf.addImage(
+            imagenSolicitudes,
+            "PNG",
+            15,
+            30,
+            180,
+            90
+        );
+
+        pdf.autoTable({
+            html: "#tablaSolicitudesCredito",
+            startY: 130,
+            theme: "grid",
+
+            margin: {
+                left: 30,
+                right: 30
+            },
+
+            headStyles: {
+                fillColor: [13, 110, 253],
+                halign: "center"
+            },
+
+            bodyStyles: {
+                halign: "center"
+            },
+
+            styles: {
+                fontSize: 10,
+                cellPadding: 3
+            }
+        });
+
+        pdf.save(
+            "reporte_vehiculos.pdf"
+        );
+    }
+</script>
+
+{% endblock %}

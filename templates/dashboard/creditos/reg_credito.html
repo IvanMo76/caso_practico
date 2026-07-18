@@ -1,0 +1,264 @@
+<!-- Modal para registrar solicitud de crédito -->
+<div class="modal fade"
+     id="modalSolicitudCredito"
+     tabindex="-1"
+     aria-labelledby="modalSolicitudCreditoLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <form id="formSolicitudCredito"
+                  action="/agregar_solicitud_credito"
+                  method="POST"
+                  novalidate>
+
+                <!-- Encabezado -->
+                <div class="modal-header">
+
+                    <h4 class="modal-title"
+                        id="modalSolicitudCreditoLabel">
+
+                        <i class="fa-solid fa-file-signature me-2"></i>
+                        Registrar solicitud de crédito
+
+                    </h4>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+                <!-- Contenido -->
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <!-- Nombre -->
+                        <div class="col-md-4 mb-3">
+
+                            <label for="nombreSolicitud"
+                                   class="form-label">
+
+                                Nombre:
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <div class="input-group has-validation">
+
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="nombreSolicitud"
+                                       name="nombre_cliente"
+                                       maxlength="80"
+                                       autocomplete="given-name"
+                                       placeholder="Nombre del cliente"
+                                       required>
+
+                                <div class="invalid-feedback">
+                                    Ingresa el nombre del cliente.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Apellido paterno -->
+                        <div class="col-md-4 mb-3">
+
+                            <label for="apellidoPaternoSolicitud"
+                                   class="form-label">
+
+                                Apellido paterno:
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   id="apellidoPaternoSolicitud"
+                                   name="ap_cliente"
+                                   maxlength="80"
+                                   autocomplete="family-name"
+                                   placeholder="Apellido paterno"
+                                   required>
+
+                            <div class="invalid-feedback">
+                                Ingresa el apellido paterno.
+                            </div>
+
+                        </div>
+
+                        <!-- Apellido materno -->
+                        <div class="col-md-4 mb-3">
+
+                            <label for="apellidoMaternoSolicitud"
+                                   class="form-label">
+                                Apellido materno:
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   id="apellidoMaternoSolicitud"
+                                   name="am_cliente"
+                                   maxlength="80"
+                                   placeholder="Apellido materno">
+
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="telefonoSolicitud"
+                                   class="form-label">
+
+                                Teléfono:
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <div class="input-group has-validation">
+
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+
+                                <input type="tel"
+                                       class="form-control"
+                                       id="telefonoSolicitud"
+                                       name="celular_cliente"
+                                       inputmode="numeric"
+                                       minlength="10"
+                                       maxlength="10"
+                                       pattern="[0-9]{10}"
+                                       placeholder="10 dígitos"
+                                       autocomplete="tel"
+                                       required>
+
+                                <div class="invalid-feedback">
+                                    Ingresa exactamente 10 dígitos.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Correo electrónico -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="correoSolicitud"
+                                   class="form-label">
+
+                                Correo electrónico:
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <div class="input-group has-validation">
+
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </span>
+
+                                <input type="email"
+                                       class="form-control"
+                                       id="correoSolicitud"
+                                       name="correo_cliente"
+                                       maxlength="120"
+                                       placeholder="cliente@correo.com"
+                                       autocomplete="email"
+                                       required>
+
+                                <div class="invalid-feedback">
+                                    Ingresa un correo electrónico válido.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Monto solicitado -->
+                        <div class="col-12 mb-3">
+
+                            <label for="montoSolicitud"
+                                   class="form-label">
+
+                                Monto solicitado:
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <div class="input-group has-validation">
+
+                                <span class="input-group-text">
+                                    <i class="fa-solid fa-dollar-sign"></i>
+                                </span>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="montoSolicitud"
+                                       name="monto"
+                                       inputmode="numeric"
+                                       placeholder="50,000"
+                                       autocomplete="off"
+                                       required>
+
+                                <span class="input-group-text">
+                                    MXN
+                                </span>
+
+                                <div class="invalid-feedback">
+                                    Ingresa un monto válido.
+                                </div>
+
+                            </div>
+
+                            <div class="form-text">
+                                El monto mínimo permitido es de $50,000.00 MXN.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Botones -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="fa-solid fa-xmark me-1"></i>
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="btnGuardarSolicitud">
+
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Guardar solicitud
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

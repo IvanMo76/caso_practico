@@ -1,0 +1,98 @@
+        body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+        url("/static/image/fondo_login.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    font-family:'Segoe UI',sans-serif;
+}
+
+        .login-card{
+    width:100%;
+    max-width:420px;
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(8px);
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+    animation:fadeIn .5s ease;
+}
+
+.login-header{
+    text-align:center;
+    padding:30px 20px;
+    background:transparent;
+}
+
+.login-body{
+    padding:30px;
+    background:transparent;
+}
+
+        .user-icon{
+            font-size:80px;
+            color:#2575fc;
+            margin-bottom:10px;
+        }
+
+        .login-body{
+            padding:30px;
+            background:#fff;
+        }
+
+        .form-control{
+            height:50px;
+            border-radius:10px;
+        }
+
+        .input-group-text{
+            border-radius:10px 0 0 10px;
+        }
+
+        .btn-login{
+            width:100%;
+            height:50px;
+            border:none;
+            border-radius:10px;
+            background:#2575fc;
+            color:white;
+            font-weight:600;
+            transition:.3s;
+        }
+
+        .btn-login:hover{
+            background:#1b5edb;
+            transform:translateY(-2px);
+        }
+
+        .password-toggle{
+            cursor:pointer;
+        }
+
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(20px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        @media(max-width:576px){
+            .login-card{
+                margin:20px;
+            }
+
+            .user-icon{
+                font-size:65px;
+            }
+        }

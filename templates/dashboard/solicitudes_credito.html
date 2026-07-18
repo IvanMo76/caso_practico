@@ -1,0 +1,1103 @@
+{% extends 'dashboard/base_admin.html' %}
+
+{% block admin %}
+
+<section id="solicitudesCredito" class="catalogo-admin">
+
+    <div class="card catalogo-card">
+
+        <div class="card-header catalogo-header">
+
+            <div>
+                <span class="catalogo-subtitulo">Administración</span>
+
+                <h4 class="mb-0">
+                    Solicitudes de Crédito
+                </h4>
+            </div>
+
+            <i class="fa-solid fa-file-signature catalogo-header-icon"></i>
+
+        </div>
+
+        <div class="card-body p-3 p-lg-4">
+
+            <div class="catalogo-toolbar">
+
+                <div>
+                    <h5 class="mb-1">
+                        Solicitudes registradas
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        Consulta y administra las solicitudes de crédito.
+                    </p>
+                </div>
+
+                <button type="button"
+        class="btn btn-agregar-vehiculo"
+        data-bs-toggle="modal"
+        data-bs-target="#modalSolicitudCredito">
+
+    <i class="fa-solid fa-circle-plus"></i>
+    Agregar solicitud
+</button>
+
+{% include 'dashboard/creditos/reg_credito.html' %}
+            </div>
+
+            <!-- Conserva aquí el include de tu modal de registro -->
+
+            <div class="table-responsive catalogo-table-container">
+
+                <table id="tablaSolicitudes"
+                       class="table align-middle nowrap"
+                       style="width: 100%;">
+
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Monto solicitado</th>
+                            <th>Fecha de registro</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for solicitud in solicitudes %}
+
+                        <tr>
+
+                            <td>
+                                <div class="cliente-solicitud">
+
+                                    
+
+                                    <span class="cliente-nombre">
+                                        {{ solicitud.nombre_cliente }}
+                                        {{ solicitud.ap_cliente }}
+                                        {{ solicitud.am_cliente }}
+                                    </span>
+
+                                </div>
+                            </td>
+
+                            <td>
+                                <a href="tel:{{ solicitud.celular_cliente }}"
+                                   class="dato-contacto">
+
+                                    {{ solicitud.celular_cliente }}
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="mailto:{{ solicitud.correo_cliente }}"
+                                   class="dato-contacto correo-solicitud"
+                                   title="{{ solicitud.correo_cliente }}">
+
+                                    {{ solicitud.correo_cliente }}
+                                </a>
+                            </td>
+
+                            <td>
+                                <span class="monto-solicitud">
+                                    ${{ "{:,.2f}".format(solicitud.monto) }}
+                                </span>
+                            </td>
+
+                            <td data-order="{{ solicitud.fecha.strftime('%Y-%m-%d') }}">
+
+                                <span class="fecha-solicitud">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    {{ solicitud.fecha.strftime('%d/%m/%Y') }}
+                                </span>
+
+                            </td>
+
+                            <td class="text-center">
+
+                                <div class="acciones-vehiculo">
+
+                                    <form
+                                        action="{{ url_for(
+                                            'eliminar_solicitud_credito',
+                                            id_credito=solicitud.id_credito
+                                        ) }}"
+                                        method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('¿Está seguro de eliminar esta solicitud?')">
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-eliminar-vehiculo"
+                                            title="Eliminar solicitud"
+                                            aria-label="Eliminar solicitud">
+
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const elementoTabla =
+        document.getElementById("tablaSolicitudes");
+
+    if (!elementoTabla) {
+        return;
+    }
+
+    if (
+        typeof jQuery === "undefined" ||
+        !$.fn.DataTable
+    ) {
+        console.error("DataTables no está cargado.");
+        return;
+    }
+
+
+    /* ==========================================
+       OBTENER FECHA DE LA SOLICITUD
+    ========================================== */
+
+    function obtenerFechaSolicitud(fila) {
+
+        if (!fila) {
+            return null;
+        }
+
+        // La fecha está en la quinta columna
+        const celdaFecha =
+            fila.querySelector("td:nth-child(5)");
+
+        if (!celdaFecha) {
+            return null;
+        }
+
+        const fechaISO =
+            celdaFecha.getAttribute("data-order");
+
+        if (!fechaISO) {
+            return null;
+        }
+
+        const partes = fechaISO
+            .substring(0, 10)
+            .split("-")
+            .map(Number);
+
+        if (partes.length !== 3) {
+            return null;
+        }
+
+        return new Date(
+            partes[0],
+            partes[1] - 1,
+            partes[2]
+        );
+    }
+
+
+    function inicioDelDia(fecha) {
+
+        return new Date(
+            fecha.getFullYear(),
+            fecha.getMonth(),
+            fecha.getDate()
+        );
+    }
+
+
+    function obtenerInicioSemana(fecha) {
+
+        const inicio = inicioDelDia(fecha);
+        const numeroDia = inicio.getDay();
+
+        const diasDesdeLunes =
+            numeroDia === 0 ? 6 : numeroDia - 1;
+
+        inicio.setDate(
+            inicio.getDate() - diasDesdeLunes
+        );
+
+        return inicio;
+    }
+
+
+    function obtenerFinSemana(fecha) {
+
+        const fin = obtenerInicioSemana(fecha);
+
+        fin.setDate(fin.getDate() + 6);
+
+        return fin;
+    }
+
+
+    function perteneceAlPeriodo(fila, periodo) {
+
+        const fechaSolicitud =
+            obtenerFechaSolicitud(fila);
+
+        if (!fechaSolicitud) {
+            return false;
+        }
+
+        const hoy = inicioDelDia(new Date());
+
+
+        if (periodo === "dia") {
+
+            const finDia = new Date(hoy);
+
+            finDia.setDate(
+                finDia.getDate() + 1
+            );
+
+            return (
+                fechaSolicitud >= hoy &&
+                fechaSolicitud < finDia
+            );
+        }
+
+
+        if (periodo === "semana") {
+
+            const inicioSemana =
+                obtenerInicioSemana(hoy);
+
+            const finSemana =
+                new Date(inicioSemana);
+
+            finSemana.setDate(
+                finSemana.getDate() + 7
+            );
+
+            return (
+                fechaSolicitud >= inicioSemana &&
+                fechaSolicitud < finSemana
+            );
+        }
+
+        return false;
+    }
+
+
+    function formatearFecha(fecha) {
+
+        return fecha.toLocaleDateString(
+            "es-MX",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    function formatearFechaArchivo(fecha) {
+
+        const anio = fecha.getFullYear();
+
+        const mes = String(
+            fecha.getMonth() + 1
+        ).padStart(2, "0");
+
+        const dia = String(
+            fecha.getDate()
+        ).padStart(2, "0");
+
+        return `${anio}-${mes}-${dia}`;
+    }
+
+
+    /* ==========================================
+       LIMPIAR CONTENIDO ANTES DE EXPORTAR
+    ========================================== */
+
+    function limpiarContenidoExportacion(
+        datos,
+        fila,
+        columna,
+        nodo
+    ) {
+
+        let contenido = "";
+
+        if (nodo) {
+            contenido = nodo.textContent || "";
+        } else {
+            const elementoTemporal =
+                document.createElement("div");
+
+            elementoTemporal.innerHTML = datos || "";
+            contenido = elementoTemporal.textContent || "";
+        }
+
+        // Elimina saltos de línea y espacios duplicados del HTML.
+        return contenido
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+
+    function personalizarPDF(documento, color) {
+
+        documento.pageMargins = [35, 45, 35, 35];
+
+        documento.defaultStyle = {
+            fontSize: 9,
+            alignment: "center"
+        };
+
+        documento.styles.title = {
+            bold: true,
+            fontSize: 17,
+            color: "#172033",
+            alignment: "center",
+            margin: [0, 0, 0, 12]
+        };
+
+        documento.styles.message = {
+            fontSize: 9,
+            color: "#495057",
+            alignment: "center",
+            margin: [0, 0, 0, 15]
+        };
+
+        documento.styles.tableHeader = {
+            bold: true,
+            fontSize: 9,
+            color: "#ffffff",
+            fillColor: color,
+            alignment: "center",
+            margin: [3, 5, 3, 5]
+        };
+
+        const tablaPDF = documento.content.find(
+            elemento => elemento.table
+        );
+
+        if (tablaPDF && tablaPDF.table.body.length > 0) {
+
+            const numeroColumnas =
+                tablaPDF.table.body[0].length;
+
+            // Reparte la tabla en todo el ancho disponible del PDF.
+            tablaPDF.table.widths =
+                Array(numeroColumnas).fill("*");
+
+            tablaPDF.alignment = "center";
+            tablaPDF.margin = [0, 5, 0, 0];
+
+            // Centra el contenido de encabezados y filas.
+            tablaPDF.table.body.forEach(function (fila, indiceFila) {
+
+                fila.forEach(function (celda, indiceColumna) {
+
+                    if (typeof celda === "object") {
+
+                        celda.alignment = "center";
+                        celda.noWrap = indiceFila > 0;
+                        celda.margin = indiceFila === 0
+                            ? [3, 5, 3, 5]
+                            : [3, 4, 3, 4];
+
+                    } else {
+
+                        fila[indiceColumna] = {
+                            text: celda,
+                            alignment: "center",
+                            noWrap: indiceFila > 0,
+                            margin: [3, 4, 3, 4]
+                        };
+                    }
+                });
+            });
+
+            tablaPDF.layout = {
+
+                hLineWidth: function (indice, nodo) {
+                    return (
+                        indice === 0 ||
+                        indice === nodo.table.body.length
+                    ) ? 0.8 : 0.3;
+                },
+
+                vLineWidth: function () {
+                    return 0.3;
+                },
+
+                hLineColor: function () {
+                    return "#cbd5e1";
+                },
+
+                vLineColor: function () {
+                    return "#cbd5e1";
+                },
+
+                paddingLeft: function () {
+                    return 5;
+                },
+
+                paddingRight: function () {
+                    return 5;
+                },
+
+                paddingTop: function () {
+                    return 4;
+                },
+
+                paddingBottom: function () {
+                    return 4;
+                }
+            };
+        }
+
+        documento.footer = function (
+            paginaActual,
+            totalPaginas
+        ) {
+
+            return {
+                text:
+                    "Página " +
+                    paginaActual +
+                    " de " +
+                    totalPaginas,
+
+                alignment: "center",
+                fontSize: 8,
+                color: "#6c757d",
+                margin: [0, 10, 0, 0]
+            };
+        };
+    }
+
+
+    if (
+        $.fn.DataTable.isDataTable(
+            "#tablaSolicitudes"
+        )
+    ) {
+
+        $("#tablaSolicitudes")
+            .DataTable()
+            .destroy();
+    }
+
+
+    const tablaSolicitudes = $("#tablaSolicitudes").DataTable({
+
+        responsive: true,
+
+        autoWidth: false,
+
+        scrollX: false,
+
+        pageLength: 5,
+
+        lengthMenu: [5],
+
+        lengthChange: false,
+
+        // Ordenar por fecha
+        order: [[4, "desc"]],
+
+        dom:
+            "<'row align-items-center mb-3'<'col-12'B>>" +
+            "<'row align-items-center mb-3'<'col-md-6'i><'col-md-6'f>>" +
+            "<'row'<'col-12'tr>>" +
+            "<'row align-items-center mt-3'<'col-md-6'i><'col-md-6'p>>",
+
+
+        buttons: [
+
+            /* PDF DEL DÍA */
+
+            {
+                extend: "pdfHtml5",
+
+                text:
+                    '<i class="fa-solid fa-calendar-day"></i> ' +
+                    "PDF por día",
+
+                className:
+                    "btn btn-reporte-dia btn-sm",
+
+                titleAttr:
+                    "Descargar solicitudes de hoy",
+
+                title: function () {
+
+                    return (
+                        "Solicitudes del día " +
+                        formatearFecha(new Date())
+                    );
+                },
+
+                filename: function () {
+
+                    return (
+                        "solicitudes_dia_" +
+                        formatearFechaArchivo(
+                            new Date()
+                        )
+                    );
+                },
+
+                messageTop: function () {
+
+                    return (
+                        "Reporte de solicitudes correspondiente al día " +
+                        formatearFecha(new Date())
+                    );
+                },
+
+                download: "download",
+
+                orientation: "landscape",
+
+                pageSize: "A4",
+
+                exportOptions: {
+
+                    rows: function (
+                        indice,
+                        datos,
+                        fila
+                    ) {
+
+                        return perteneceAlPeriodo(
+                            fila,
+                            "dia"
+                        );
+                    },
+
+                    columns: [0, 1, 2, 3, 4],
+
+                    format: {
+                        body: limpiarContenidoExportacion
+                    },
+
+                    modifier: {
+                        search: "none",
+                        order: "applied",
+                        page: "all"
+                    }
+                },
+
+                customize: function (documento) {
+
+                    personalizarPDF(
+                        documento,
+                        "#0d6efd"
+                    );
+                }
+            },
+
+
+            /* PDF DE LA SEMANA */
+
+            {
+                extend: "pdfHtml5",
+
+                text:
+                    '<i class="fa-solid fa-calendar-week"></i> ' +
+                    "PDF por semana",
+
+                className:
+                    "btn btn-reporte-semana btn-sm",
+
+                titleAttr:
+                    "Descargar solicitudes de esta semana",
+
+                title: function () {
+
+                    const inicioSemana =
+                        obtenerInicioSemana(
+                            new Date()
+                        );
+
+                    const finSemana =
+                        obtenerFinSemana(
+                            new Date()
+                        );
+
+                    return (
+                        "Solicitudes del " +
+                        formatearFecha(inicioSemana) +
+                        " al " +
+                        formatearFecha(finSemana)
+                    );
+                },
+
+                filename: function () {
+
+                    const inicioSemana =
+                        obtenerInicioSemana(
+                            new Date()
+                        );
+
+                    return (
+                        "solicitudes_semana_" +
+                        formatearFechaArchivo(
+                            inicioSemana
+                        )
+                    );
+                },
+
+                messageTop: function () {
+
+                    const inicioSemana =
+                        obtenerInicioSemana(
+                            new Date()
+                        );
+
+                    const finSemana =
+                        obtenerFinSemana(
+                            new Date()
+                        );
+
+                    return (
+                        "Reporte semanal del " +
+                        formatearFecha(inicioSemana) +
+                        " al " +
+                        formatearFecha(finSemana)
+                    );
+                },
+
+                download: "download",
+
+                orientation: "landscape",
+
+                pageSize: "A4",
+
+                exportOptions: {
+
+                    rows: function (
+                        indice,
+                        datos,
+                        fila
+                    ) {
+
+                        return perteneceAlPeriodo(
+                            fila,
+                            "semana"
+                        );
+                    },
+
+                    columns: [0, 1, 2, 3, 4],
+
+                    format: {
+                        body: limpiarContenidoExportacion
+                    },
+
+                    modifier: {
+                        search: "none",
+                        order: "applied",
+                        page: "all"
+                    }
+                },
+
+                customize: function (documento) {
+
+                    personalizarPDF(
+                        documento,
+                        "#6f42c1"
+                    );
+                }
+            },
+
+
+           
+            /* PDF GENERAL */
+
+            {
+                extend: "pdfHtml5",
+
+                text:
+                    '<i class="fa-solid fa-file-pdf"></i> ' +
+                    "PDF",
+
+                className:
+                    "btn btn-danger btn-sm",
+
+                title:
+                    "Solicitudes de crédito",
+
+                filename:
+                    "todas_las_solicitudes",
+
+                messageTop:
+                    "Reporte general de solicitudes de crédito",
+
+                download: "download",
+
+                orientation: "landscape",
+
+                pageSize: "A4",
+
+                exportOptions: {
+
+                    columns: [0, 1, 2, 3, 4],
+
+                    format: {
+                        body: limpiarContenidoExportacion
+                    },
+
+                    modifier: {
+                        search: "applied",
+                        order: "applied",
+                        page: "all"
+                    }
+                },
+
+                customize: function (documento) {
+
+                    personalizarPDF(
+                        documento,
+                        "#dc3545"
+                    );
+                }
+            },
+
+
+            /* IMPRIMIR */
+
+            
+            ],
+
+
+        columnDefs: [
+
+            {
+                // Acciones es la sexta columna:
+                // su índice es 5
+                targets: 5,
+
+                orderable: false,
+
+                searchable: false,
+
+                className: "text-center"
+            }
+        ],
+
+
+        language: {
+
+            search: "Buscar:",
+
+            searchPlaceholder:
+                "Cliente, teléfono, correo...",
+
+            emptyTable:
+                "No hay solicitudes registradas",
+
+            zeroRecords:
+                "No se encontraron solicitudes",
+
+            info:
+                "Mostrando _START_ a _END_ de _TOTAL_ solicitudes",
+
+            infoEmpty:
+                "Mostrando 0 solicitudes",
+
+            infoFiltered:
+                "(filtrado de _MAX_ registros)",
+
+            loadingRecords:
+                "Cargando...",
+
+            processing:
+                "Procesando...",
+
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            }
+        }
+
+    });
+
+
+    /* ==========================================
+       ACTUALIZACIÓN AUTOMÁTICA CADA 5 SEGUNDOS
+    ========================================== */
+
+    let actualizandoSolicitudes = false;
+
+
+    function crearFilaSolicitud(solicitud) {
+
+        const fila = document.createElement("tr");
+
+
+        /* NOMBRE COMPLETO */
+
+        const celdaNombre = document.createElement("td");
+        const contenedorCliente = document.createElement("div");
+        const nombre = document.createElement("span");
+
+        contenedorCliente.className = "cliente-solicitud";
+        nombre.className = "cliente-nombre";
+        nombre.textContent = solicitud.nombre_completo || "";
+
+        contenedorCliente.appendChild(nombre);
+        celdaNombre.appendChild(contenedorCliente);
+
+
+        /* TELÉFONO */
+
+        const celdaTelefono = document.createElement("td");
+        const enlaceTelefono = document.createElement("a");
+
+        enlaceTelefono.href = `tel:${solicitud.celular || ""}`;
+        enlaceTelefono.className = "dato-contacto";
+        enlaceTelefono.textContent = solicitud.celular || "";
+
+        celdaTelefono.appendChild(enlaceTelefono);
+
+
+        /* CORREO */
+
+        const celdaCorreo = document.createElement("td");
+        const enlaceCorreo = document.createElement("a");
+
+        enlaceCorreo.href = `mailto:${solicitud.correo || ""}`;
+        enlaceCorreo.className = "dato-contacto correo-solicitud";
+        enlaceCorreo.title = solicitud.correo || "";
+        enlaceCorreo.textContent = solicitud.correo || "";
+
+        celdaCorreo.appendChild(enlaceCorreo);
+
+
+        /* MONTO */
+
+        const celdaMonto = document.createElement("td");
+        const monto = document.createElement("span");
+
+        monto.className = "monto-solicitud";
+        monto.textContent = Number(
+            solicitud.monto || 0
+        ).toLocaleString(
+            "es-MX",
+            {
+                style: "currency",
+                currency: "MXN"
+            }
+        );
+
+        celdaMonto.appendChild(monto);
+
+
+        /* FECHA */
+
+        const celdaFecha = document.createElement("td");
+        const fecha = document.createElement("span");
+        const iconoFecha = document.createElement("i");
+
+        celdaFecha.setAttribute(
+            "data-order",
+            solicitud.fecha_iso || ""
+        );
+
+        fecha.className = "fecha-solicitud";
+        iconoFecha.className = "fa-regular fa-calendar";
+
+        fecha.appendChild(iconoFecha);
+        fecha.appendChild(
+            document.createTextNode(
+                ` ${solicitud.fecha || ""}`
+            )
+        );
+
+        celdaFecha.appendChild(fecha);
+
+
+        /* ACCIONES */
+
+        const celdaAcciones = document.createElement("td");
+        const contenedorAcciones = document.createElement("div");
+        const formularioEliminar = document.createElement("form");
+        const botonEliminar = document.createElement("button");
+        const iconoEliminar = document.createElement("i");
+
+        celdaAcciones.className = "text-center";
+        contenedorAcciones.className = "acciones-vehiculo";
+
+        formularioEliminar.action = solicitud.url_eliminar;
+        formularioEliminar.method = "POST";
+        formularioEliminar.className = "d-inline";
+
+        botonEliminar.type = "submit";
+        botonEliminar.className = "btn btn-eliminar-vehiculo";
+        botonEliminar.title = "Eliminar solicitud";
+        botonEliminar.setAttribute(
+            "aria-label",
+            "Eliminar solicitud"
+        );
+
+        iconoEliminar.className = "fa-solid fa-trash-can";
+
+        botonEliminar.appendChild(iconoEliminar);
+
+        formularioEliminar.addEventListener(
+            "submit",
+            function (evento) {
+
+                const confirmar = window.confirm(
+                    "¿Está seguro de eliminar esta solicitud?"
+                );
+
+                if (!confirmar) {
+                    evento.preventDefault();
+                }
+            }
+        );
+
+        formularioEliminar.appendChild(botonEliminar);
+        contenedorAcciones.appendChild(formularioEliminar);
+        celdaAcciones.appendChild(contenedorAcciones);
+
+
+        /* CONSTRUIR FILA */
+
+        fila.appendChild(celdaNombre);
+        fila.appendChild(celdaTelefono);
+        fila.appendChild(celdaCorreo);
+        fila.appendChild(celdaMonto);
+        fila.appendChild(celdaFecha);
+        fila.appendChild(celdaAcciones);
+
+        return fila;
+    }
+
+
+    async function actualizarTablaSolicitudes() {
+
+        if (
+            actualizandoSolicitudes ||
+            document.hidden
+        ) {
+            return;
+        }
+
+        actualizandoSolicitudes = true;
+
+        try {
+
+            const respuesta = await fetch(
+                "{{ url_for('api_solicitudes_credito') }}",
+                {
+                    method: "GET",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            if (respuesta.redirected) {
+                window.location.href = respuesta.url;
+                return;
+            }
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    `Error del servidor: ${respuesta.status}`
+                );
+            }
+
+            const datos = await respuesta.json();
+            const busquedaActual = tablaSolicitudes.search();
+
+            tablaSolicitudes.clear();
+
+            datos.solicitudes.forEach(
+                function (solicitud) {
+
+                    tablaSolicitudes.row.add(
+                        crearFilaSolicitud(solicitud)
+                    );
+                }
+            );
+
+            tablaSolicitudes
+                .search(busquedaActual)
+                .draw(false);
+
+            console.log(
+                "Tabla de solicitudes actualizada:",
+                new Date().toLocaleTimeString("es-MX")
+            );
+
+        } catch (error) {
+
+            console.error(
+                "No se pudo actualizar la tabla de solicitudes:",
+                error
+            );
+
+        } finally {
+
+            actualizandoSolicitudes = false;
+        }
+    }
+
+
+    // Consulta los datos al abrir la página.
+    actualizarTablaSolicitudes();
+
+
+    // Consulta nuevamente cada cinco segundos.
+    window.setInterval(
+        actualizarTablaSolicitudes,
+        5000
+    );
+
+
+    // Actualiza inmediatamente al regresar a la pestaña.
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (!document.hidden) {
+                actualizarTablaSolicitudes();
+            }
+        }
+    );
+
+});
+
+</script>
+
+{% endblock %}

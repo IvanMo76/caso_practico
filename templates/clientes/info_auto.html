@@ -1,0 +1,159 @@
+{%extends 'clientes/base_usuario.html'%}
+{%block contenido%}
+<!-- DETALLE VEHÍCULO -->
+<section class="vehicle-hero">
+
+  <div class="vehicle-info">
+    <span class="vehicle-label">Nuevo</span>
+
+    <h1>{{catalogo.marca}} {{catalogo.modelo}} {{catalogo.anio}}</h1>
+
+    <p class="vehicle-subtitle">
+      Más {{catalogo.marca}} que nunca desde: 
+      ${{"{:,}".format(catalogo.precio_unidad)}}
+    </p>
+
+    <div class="vehicle-actions">
+      <button type="button"
+        class="btn btn-outline-dark btn-cotizar"
+        data-bs-toggle="modal"
+        data-bs-target="#modalCotizacion"
+        data-id="{{ catalogo.id_auto }}"
+        data-marca="{{ catalogo.marca }}"
+        data-modelo="{{ catalogo.modelo }}"
+        data-anio="{{ catalogo.anio }}"
+        data-precio="{{ catalogo.precio_unidad }}">
+    Cotizar
+</button>
+              {% include 'clientes/modal_cotizacion/cotizacion_auto.html' %}
+
+      
+    </div>
+    
+  </div>
+  
+  <div class="vehicle-image">
+
+    {% set imagenes = catalogo.imagen.split(',') %}
+
+    <div id="carouselAuto{{ catalogo.id_auto }}"
+         class="carousel slide"
+         data-bs-ride="carousel"
+         data-bs-interval="2500"
+         data-bs-pause="false">
+
+        <div class="carousel-inner">
+
+            {% for imagen in imagenes %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img src="{{ url_for('static', filename='image/catalogo/' + imagen.strip()) }}"
+                     class="d-block w-100"
+                     alt="Imagen {{ loop.index }}"
+                     style="height:350px; object-fit:cover;">
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% if imagenes|length > 1 %}
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#carouselAuto{{ catalogo.id_auto }}"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#carouselAuto{{ catalogo.id_auto }}"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+        {% endif %}
+        
+    </div>
+
+</div>
+</section>
+<section class="vehicle-note-section">
+
+    <label>
+        El precio publicado aplica para el vehículo
+                {{ catalogo.marca }} {{ catalogo.modelo }} {{ catalogo.anio }}
+                y es de carácter informativo, sujeto a disponibilidad,
+                vigencia y cambios sin previo aviso. La autorización del
+                financiamiento dependerá de la evaluación y aprobación
+                crediticia de cada solicitante. Las condiciones del crédito,
+                incluyendo tasa de interés, plazo, monto y enganche,
+                podrán variar según el perfil del cliente. Aplican términos,
+                condiciones y restricciones.
+    </label>
+
+</section>
+<!-- MENÚ INTERNO -->
+<nav class="vehicle-menu">
+  <a href="#descripcion">Descripcion</a>
+</nav>
+
+<!-- RESUMEN -->
+<section class="vehicle-summary" id="descripcion">
+
+  <div class="summary-title">
+    <h2>{{catalogo.marca}} {{catalogo.modelo}}</h2>
+    <p>Diseño, tecnología y desempeño para tu día a día.</p>
+  </div>
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <h3>Descripcion</h3>
+      <h6>{{catalogo.descripcion}}</h6>
+    </div>
+
+   
+
+  </div>
+
+</section>
+<!-- Notificaciones enviadas desde Flask -->
+{% with mensajes = get_flashed_messages(with_categories=true) %}
+  {% if mensajes %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+
+        const mensajes = {{ mensajes | tojson }};
+        const [categoria, mensaje] = mensajes[0];
+
+        const configuraciones = {
+          success: {
+            icon: "success",
+            title: "¡Cotización enviada!",
+            confirmButtonText: "Aceptar"
+          },
+          warning: {
+            icon: "warning",
+            title: "Verifica la información",
+            confirmButtonText: "Entendido"
+          },
+          error: {
+            icon: "error",
+            title: "No se pudo enviar",
+            confirmButtonText: "Aceptar"
+          }
+        };
+
+        const configuracion =
+          configuraciones[categoria] || configuraciones.error;
+
+        Swal.fire({
+          icon: configuracion.icon,
+          title: configuracion.title,
+          text: mensaje,
+          confirmButtonText: configuracion.confirmButtonText,
+          confirmButtonColor: "#8b0d24",
+          allowOutsideClick: false
+        });
+
+      });
+    </script>
+  {% endif %}
+{% endwith %}
+{%endblock%}

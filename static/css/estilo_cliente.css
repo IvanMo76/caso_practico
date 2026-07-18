@@ -147,3 +147,851 @@ a .img_logo{
     }
 
 }
+
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.btn-danger {
+  background-color: #8b0d24;
+  border-color: #8b0d24;
+}
+
+.btn-danger:hover {
+  background-color: #6f0a1d;
+  border-color: #6f0a1d;
+}
+
+.btn-outline-danger {
+  color: #8b0d24;
+  border-color: #8b0d24;
+}
+
+.btn-outline-danger:hover,
+.btn-check:checked + .btn-outline-danger {
+  background-color: #8b0d24;
+  border-color: #8b0d24;
+  color: #fff;
+}
+
+.rounded-4 {
+  border-radius: 1rem;
+}
+
+/* NAVBAR */
+.nissan-navbar {
+  width: 100%;
+  height: 76px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34px;
+  border-bottom: 1px solid #e6e6e6;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* IZQUIERDA */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.menu-btn {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.brand {
+  text-decoration: none;
+}
+
+.brand-circle {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #111;
+  border-radius: 50%;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 26px;
+}
+
+/* CENTRO */
+.nav-center {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-center > li > a {
+  text-decoration: none;
+  color: #111;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 30px 0;
+  display: block;
+  position: relative;
+}
+
+.nav-center > li > a::after {
+  content: "";
+  width: 0;
+  height: 3px;
+  background: #c3002f;
+  position: absolute;
+  left: 0;
+  bottom: 18px;
+  transition: .3s;
+}
+
+.nav-center > li:hover > a::after {
+  width: 100%;
+}
+
+/* DERECHA */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.search-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+}
+
+/* MEGA MENÚ */
+.nav-item-mega {
+  position: static;
+}
+
+.nav-item-mega:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mega-menu {
+  position: absolute;
+  top: 76px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 12px 30px rgba(0,0,0,.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: .25s ease;
+  z-index: 999;
+}
+
+.mega-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.mega-tabs button {
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  color: #333;
+  padding: 10px 14px;
+}
+
+.mega-tabs button:hover {
+  color: #c3002f;
+}
+
+.mega-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  max-width: 1100px;
+  margin: auto;
+  padding: 34px 20px;
+}
+
+.car-card {
+  text-align: center;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.car-card:hover {
+  transform: translateY(-6px);
+}
+
+.car-card img {
+  width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+}
+
+.car-card h6 {
+  margin-top: 14px;
+  font-weight: 700;
+}
+
+.car-card small {
+  color: #666;
+}
+
+.mega-footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+
+
+/* MENÚS SIMPLES */
+.simple-menu {
+  display: flex;
+  justify-content: center;
+  gap: 42px;
+  padding: 36px 20px;
+}
+
+.simple-menu a {
+  color: #111;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.simple-menu a:hover {
+  color: #c3002f;
+}
+
+/* MÓVIL */
+.mobile-links a {
+  display: block;
+  color: #111;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+@media (max-width: 1100px) {
+  .nav-center,
+  .nav-right {
+    display: none;
+  }
+
+  .nissan-navbar {
+    padding: 0 20px;
+  }
+
+  .brand-circle {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/*Estilos informacion autos*/
+/* HERO VEHÍCULO */
+.vehicle-hero {
+  min-height: 500px;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: center;
+  background: linear-gradient(90deg, #f4f4f4 0%, #ffffff 100%);
+  padding: 90px 7%;
+  overflow: hidden;
+}
+
+.vehicle-label {
+  font-weight: 700;
+  color: #c3002f;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.vehicle-info h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 15px 0;
+  color: #111;
+}
+
+.vehicle-subtitle {
+  font-size: 1.4rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.vehicle-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.vehicle-image img {
+  width: 100%;
+  max-height: 470px;
+  object-fit: contain;
+}
+
+/* MENÚ INTERNO */
+.vehicle-menu {
+  height: 70px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  align-items: center;
+  position: sticky;
+  top: 76px;
+  z-index: 900;
+}
+
+.vehicle-menu a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+}
+
+.vehicle-menu a:hover {
+  color: #c3002f;
+}
+
+/* RESUMEN */
+.vehicle-summary {
+  padding: 80px 7%;
+  background: #fff;
+}
+
+.summary-title {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.summary-title h2,
+.versions-section h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+
+
+.summary-card {
+  border: 1px solid #eee;
+  padding: 35px 20px;
+  text-align: center;
+  transition: .3s;
+}
+
+.summary-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  transform: translateY(-6px);
+}
+
+.summary-card h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+/* VERSIONES */
+.versions-section {
+  padding: 80px 7%;
+  background: #f6f6f6;
+  text-align: center;
+}
+
+.versions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 45px;
+}
+
+.version-card {
+  background: #fff;
+  padding: 35px 25px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  transition: .3s;
+}
+
+.version-card:hover {
+  transform: translateY(-8px);
+}
+
+.version-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+}
+
+.version-card h4 {
+  font-weight: 800;
+  margin-top: 20px;
+}
+
+.version-card p {
+  color: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .vehicle-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 70px 5%;
+  }
+
+  .vehicle-info h1 {
+    font-size: 2.8rem;
+  }
+
+  .vehicle-actions {
+    justify-content: center;
+  }
+
+  .summary-grid,
+  .versions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vehicle-menu {
+    overflow-x: auto;
+    justify-content: start;
+    padding: 0 20px;
+    gap: 28px;
+  }
+}
+.car-card .carousel {
+  width: 100%;
+}
+
+.car-card .carousel-inner,
+.car-card .carousel-item {
+  width: 100%;
+}
+
+.car-card .carousel-item img {
+  width: 100%;
+  height: 120px;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+.car-card .carousel-control-prev,
+.car-card .carousel-control-next,
+.car-card .carousel-indicators {
+  display: none;
+}
+.car-card {
+  min-height: 210px;
+}
+
+.car-card a {
+  display: block;
+  text-decoration: none;
+}
+
+.car-card .carousel {
+  width: 100%;
+  height: 120px;
+}
+
+.car-card .carousel-inner,
+.car-card .carousel-item {
+  width: 100%;
+  height: 120px;
+}
+
+.car-card .carousel-item img {
+  width: 100%;
+  height: 120px;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+.car-card h6 {
+  margin-top: 14px;
+  font-weight: 700;
+  color: #111;
+  display: block;
+}
+
+.car-card small {
+  color: #666;
+  display: block;
+}
+/*Pie de pagina*/
+
+.footer-financiera{
+
+    background:#fff;
+
+    border-top:1px solid #e8e8e8;
+
+    padding:80px 70px 25px;
+
+    margin-top:100px;
+
+}
+
+.footer-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    margin-bottom:20px;
+
+}
+
+.footer-brand h4{
+
+    margin:0;
+
+    font-weight:700;
+
+}
+
+.footer-financiera p{
+
+    color:#666;
+
+    line-height:1.9;
+
+}
+
+.footer-financiera h5{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:25px;
+
+}
+
+.footer-financiera ul{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.footer-financiera li{
+
+    margin-bottom:15px;
+
+    color:#555;
+
+}
+
+.footer-financiera a{
+
+    color:#555;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.footer-financiera a:hover{
+
+    color:#c3002f;
+
+    padding-left:5px;
+
+}
+
+.footer-social{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.footer-social a{
+
+    width:42px;
+
+    height:42px;
+
+    border:1px solid #ddd;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#444;
+
+}
+
+.footer-social a:hover{
+
+    border-color:#c3002f;
+
+    color:#c3002f;
+
+}
+
+.footer-financiera iframe{
+
+    width:100%;
+
+    height:230px;
+
+    border:none;
+
+    border-radius:15px;
+
+}
+
+.footer-financiera hr{
+
+    margin:55px 0 25px;
+
+    color:#ddd;
+
+}
+
+.footer-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+}
+
+.footer-bottom span{
+
+    color:#777;
+
+}
+
+.footer-bottom div{
+
+    display:flex;
+
+    gap:30px;
+
+}
+
+.footer-bottom a{
+
+    font-size:14px;
+
+}
+
+@media(max-width:992px){
+
+.footer-bottom{
+
+    flex-direction:column;
+
+    gap:20px;
+
+    text-align:center;
+
+}
+
+.footer-financiera{
+
+    padding:60px 25px;
+
+}
+
+}
+
+/*Estilos catalogo de autos ususario*/
+.catalogo-page {
+  background: #fff;
+  padding: 70px 7%;
+}
+
+.catalogo-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.catalogo-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #111;
+}
+
+.catalogo-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.catalogo-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 55px;
+}
+
+.catalogo-tab {
+  border: none;
+  background: transparent;
+  padding: 18px 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #333;
+}
+
+.catalogo-tab.active {
+  color: #c3002f;
+  border-bottom: 3px solid #c3002f;
+}
+
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 55px 35px;
+}
+
+.catalogo-card {
+  text-align: center;
+  transition: .3s;
+}
+
+.catalogo-card:hover {
+  transform: translateY(-6px);
+}
+
+.catalogo-card a {
+  text-decoration: none;
+  color: #111;
+}
+
+.catalogo-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+
+.catalogo-card h3 {
+  margin-top: 22px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.catalogo-card p {
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.catalogo-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.catalogo-actions .btn {
+  font-size: .85rem;
+  padding: 8px 16px;
+}
+
+@media (max-width: 992px) {
+  .catalogo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .catalogo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.catalogo-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 35px;
+}
+
+.orden-select {
+  width: 170px;
+  padding: 6px 10px;
+  border: 2px solid #111;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+h6{
+  text-align: justify;
+}
+.catalogo-carousel {
+  width: 100%;
+  height: 160px;
+}
+
+.catalogo-carousel .carousel-inner,
+.catalogo-carousel .carousel-item {
+  width: 100%;
+  height: 160px;
+}
+
+.catalogo-carousel img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  display: block;
+}
+.vehicle-note-section{
+    max-width:1200px;
+    margin:15px auto 0;
+    padding:0 7%;
+}

@@ -1,68 +1,611 @@
-<div class="modal" id="actAutoModal{{catalogo.id_auto}}">
-    <div class="modal-dialog">
+<!-- Modal para actualizar vehículo -->
+<div class="modal fade"
+     id="actAutoModal{{ catalogo.id_auto }}"
+     tabindex="-1"
+     aria-labelledby="actAutoModalLabel{{ catalogo.id_auto }}"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <h4 class="modal-title">Actualizar</h4>
-            </div>
-            <div class="modal-body">
-                <form action="{{url_for('actualizar_auto',id_auto=catalogo.id_auto)}}" method="post"
-                    enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="act_modelo">Modelo:</label>
-                        <input type="text" class="form-control" id="act_modelo" name="act_modelo"
-                            value="{{catalogo.modelo}}">
-                    </div>
-                    <hr>
-                    <div class="form-group">
-                        <label for="act_anio" class="titulos">Año:</label>
-                        <select name="act_anio" class="form-control" id="act_anio">
-                            <option value="">{{catalogo.anio}}</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                        </select>
-                        <label for="act_km" class="titulos">Km:</label>
-                        <input type="text" class="form-control" id="act_km" name="act_km"
-                            placeholder="{{catalogo.km}}">
-                    </div>                
-                   
-                    
-                    <div class="form-group">
-                        <label for="act_marca">Marca:</label>
-                        <input type="text" class="form-control" id="act_marca" name="act_marca"
-                            placeholder="{{catalogo.marca}}">
-                        <div class="form-group">
-                            <label for="act_descripcion">Descripcion:</label>
-                            <textarea name="act_descripcion" class="form-control" id="act_descripcion"
-                                placeholder="{{catalogo.descripcion}}"></textarea>
+            <form action="{{ url_for('actualizar_auto', id_auto=catalogo.id_auto) }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <!-- Encabezado -->
+                <div class="modal-header">
+
+                    <h4 class="modal-title"
+                        id="actAutoModalLabel{{ catalogo.id_auto }}">
+                        Actualizar vehículo
+                    </h4>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+                <!-- Contenido -->
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <!-- Marca -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_marca{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Marca:
+                            </label>
+
+                            <select name="act_marca"
+                                    class="form-select select-marca-actualizar"
+                                    id="act_marca{{ catalogo.id_auto }}"
+                                    data-modelo-id="act_modelo{{ catalogo.id_auto }}"
+                                    data-modelo-actual="{{ catalogo.modelo }}"
+                                    required>
+
+                                <option value="">
+                                    Selecciona una marca
+                                </option>
+
+                                <option value="Astera Motors"
+                                    {% if catalogo.marca == 'Astera Motors' %}
+                                        selected
+                                    {% endif %}>
+                                    Astera Motors
+                                </option>
+
+                                <option value="Veltrix Auto"
+                                    {% if catalogo.marca == 'Veltrix Auto' %}
+                                        selected
+                                    {% endif %}>
+                                    Veltrix Auto
+                                </option>
+
+                                <option value="Novaris"
+                                    {% if catalogo.marca == 'Novaris' %}
+                                        selected
+                                    {% endif %}>
+                                    Novaris
+                                </option>
+
+                                <option value="Altiora"
+                                    {% if catalogo.marca == 'Altiora' %}
+                                        selected
+                                    {% endif %}>
+                                    Altiora
+                                </option>
+
+                                <option value="Zentari"
+                                    {% if catalogo.marca == 'Zentari' %}
+                                        selected
+                                    {% endif %}>
+                                    Zentari
+                                </option>
+
+                                <option value="Falcora"
+                                    {% if catalogo.marca == 'Falcora' %}
+                                        selected
+                                    {% endif %}>
+                                    Falcora
+                                </option>
+
+                                <option value="Kronvia"
+                                    {% if catalogo.marca == 'Kronvia' %}
+                                        selected
+                                    {% endif %}>
+                                    Kronvia
+                                </option>
+
+                                <option value="Solvian"
+                                    {% if catalogo.marca == 'Solvian' %}
+                                        selected
+                                    {% endif %}>
+                                    Solvian
+                                </option>
+
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="act_precio_unidad">Precio unidad:</label>
-                        <input type="number" class="form-control" id="act_precio_unidad" name="act_precio_unidad"
-                            placeholder="{{catalogo.precio_unidad}}">
+
+                        <!-- Modelo -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_modelo{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Modelo:
+                            </label>
+
+                            <select name="act_modelo"
+                                    class="form-select"
+                                    id="act_modelo{{ catalogo.id_auto }}"
+                                    required>
+
+                                <option value="{{ catalogo.modelo }}" selected>
+                                    {{ catalogo.modelo }}
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <!-- Año -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_anio{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Año:
+                            </label>
+
+                            <select name="act_anio"
+                                    class="form-select"
+                                    id="act_anio{{ catalogo.id_auto }}"
+                                    required>
+
+                                <option value="">
+                                    Selecciona el año
+                                </option>
+
+                                {% for anio in range(2026, 2014, -1) %}
+
+                                    <option value="{{ anio }}"
+                                        {% if catalogo.anio|string == anio|string %}
+                                            selected
+                                        {% endif %}>
+                                        {{ anio }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <!-- Kilometraje -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_km{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Kilometraje:
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="act_km{{ catalogo.id_auto }}"
+                                   name="act_km"
+                                   value="{{ catalogo.km }}"
+                                   min="0"
+                                   required>
+
+                        </div>
+
+                        <!-- Tipo -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_tipo{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Tipo de vehículo:
+                            </label>
+
+                            <select name="act_tipo"
+                                    class="form-select"
+                                    id="act_tipo{{ catalogo.id_auto }}"
+                                    required>
+
+                                <option value="">
+                                    Selecciona el tipo
+                                </option>
+
+                                <option value="sedan"
+                                    {% if catalogo.tipo|lower == 'sedan' %}
+                                        selected
+                                    {% endif %}>
+                                    Sedán
+                                </option>
+
+                                <option value="suv"
+                                    {% if catalogo.tipo|lower == 'suv' %}
+                                        selected
+                                    {% endif %}>
+                                    SUV
+                                </option>
+
+                                <option value="pickup"
+                                    {% if catalogo.tipo|lower in
+                                        ['pickup', 'pick-up', 'pic-kup'] %}
+                                        selected
+                                    {% endif %}>
+                                    Pickup
+                                </option>
+
+                                <option value="seminuevo"
+                                    {% if catalogo.tipo|lower == 'seminuevo' %}
+                                        selected
+                                    {% endif %}>
+                                    Seminuevo
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="col-md-6 mb-3">
+
+                            <label for="act_precio_unidad{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Precio en lista:
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    $
+                                </span>
+
+                                <input type="number"
+                                       class="form-control"
+                                       id="act_precio_unidad{{ catalogo.id_auto }}"
+                                       name="act_precio_unidad"
+                                       value="{{ catalogo.precio_unidad }}"
+                                       min="0"
+                                       step="0.01"
+                                       required>
+
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="col-12 mb-3">
+
+                            <label for="act_descripcion{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Descripción:
+                            </label>
+
+                            <textarea name="act_descripcion"
+                                      class="form-control"
+                                      id="act_descripcion{{ catalogo.id_auto }}"
+                                      rows="4"
+                                      required>{{ catalogo.descripcion }}</textarea>
+
+                        </div>
+
+                        <!-- Imágenes -->
+                        <div class="col-12 mb-3">
+
+                            <label for="act_imagen{{ catalogo.id_auto }}"
+                                   class="form-label">
+                                Nuevas imágenes:
+                            </label>
+
+                            <input type="file"
+                                   class="form-control input-imagen-actualizar"
+                                   id="act_imagen{{ catalogo.id_auto }}"
+                                   name="act_imagen"
+                                   accept="image/png,image/jpeg,image/webp"
+                                   multiple
+                                   data-preview-id="imagenPreview{{ catalogo.id_auto }}"
+                                   data-list-id="imageList{{ catalogo.id_auto }}">
+
+                            <small class="text-muted">
+                                Deja este campo vacío si no deseas cambiar
+                                las imágenes actuales.
+                            </small>
+
+                            <!-- Vista previa -->
+                            <div id="imagenPreview{{ catalogo.id_auto }}"
+                                 class="d-flex flex-wrap gap-2 mt-3">
+                            </div>
+
+                            <!-- Lista de nombres de imágenes -->
+                            <textarea id="imageList{{ catalogo.id_auto }}"
+                                      name="imageList"
+                                      hidden></textarea>
+
+                        </div>
+
                     </div>
 
-                    <div class="form-group">
+                </div>
 
-                        <label for="act_imagen">Imagen:</label>
-                        <input type="file" id="act_imagen" name="act_imagen" multiple
-                            onchange="handleImageSelection(event)">
-                        <div id="imagenPreview"></div>
-                        <textarea id="imageList" name="imageList" style="display: none;"></textarea>
+                <!-- Botones -->
+                <div class="modal-footer">
 
-                    </div>
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        Actualizar vehículo
+
+                    </button>
+
+                </div>
+
             </form>
+
         </div>
     </div>
 </div>
-</div>
+
+<script>
+(function () {
+
+    /*
+     * Marcas y modelos ficticios
+     */
+    const modelosPorMarca = {
+
+        "Astera Motors": [
+            "Vela",
+            "Nebula",
+            "Celsa",
+            "Arion",
+            "Kairo",
+            "Terris",
+            "Bravon",
+            "Cargus"
+        ],
+
+        "Veltrix Auto": [
+            "Sfera",
+            "Nexo",
+            "Vantis",
+            "Prisma X",
+            "Altair",
+            "Rovera",
+            "Torvik",
+            "Maxtrail"
+        ],
+
+        "Novaris": [
+            "Liria",
+            "Vectora",
+            "Seren",
+            "Atria",
+            "Corsen",
+            "Taeron",
+            "Vigra",
+            "Savon"
+        ],
+
+        "Altiora": [
+            "Corven",
+            "Yarix",
+            "Camira",
+            "Raizen",
+            "Avelon",
+            "Hilven",
+            "Targon"
+        ],
+
+        "Zentari": [
+            "Lumo",
+            "Aster",
+            "Orionis",
+            "Kyra",
+            "Nexar",
+            "Eikon",
+            "Teryx"
+        ],
+
+        "Falcora": [
+            "Fenix",
+            "Vesta",
+            "Kron",
+            "Esfera",
+            "Exora",
+            "Rakon",
+            "Titan 150"
+        ],
+
+        "Kronvia": [
+            "Riva",
+            "Forten",
+            "Kora 3",
+            "Seltra",
+            "Sporia",
+            "Sorvia"
+        ],
+
+        "Solvian": [
+            "Mini V10",
+            "Acentra",
+            "Elion",
+            "Crevia",
+            "Tursen",
+            "Santara"
+        ]
+
+    };
+
+    /*
+     * Cargar los modelos correspondientes
+     * a la marca seleccionada.
+     */
+    function cargarModelos(selectMarca, modeloActual = "") {
+
+        const modeloId = selectMarca.dataset.modeloId;
+        const selectModelo = document.getElementById(modeloId);
+        const marca = selectMarca.value;
+
+        if (!selectModelo) {
+            return;
+        }
+
+        selectModelo.innerHTML =
+            '<option value="">Selecciona el modelo</option>';
+
+        if (!modelosPorMarca[marca]) {
+
+            selectModelo.innerHTML =
+                '<option value="">Primero selecciona una marca</option>';
+
+            return;
+        }
+
+        modelosPorMarca[marca].forEach(function (modelo) {
+
+            const option = document.createElement("option");
+
+            option.value = modelo;
+            option.textContent = modelo;
+
+            if (modelo === modeloActual) {
+                option.selected = true;
+            }
+
+            selectModelo.appendChild(option);
+
+        });
+
+        /*
+         * Si el modelo almacenado no pertenece a la lista,
+         * se conserva temporalmente para evitar perderlo.
+         */
+        if (
+            modeloActual &&
+            !modelosPorMarca[marca].includes(modeloActual)
+        ) {
+
+            const optionActual = document.createElement("option");
+
+            optionActual.value = modeloActual;
+            optionActual.textContent = modeloActual;
+            optionActual.selected = true;
+
+            selectModelo.appendChild(optionActual);
+        }
+    }
+
+    /*
+     * Inicializar los campos del modal.
+     */
+    function inicializarModalActualizacion() {
+
+        const selectsMarca = document.querySelectorAll(
+            ".select-marca-actualizar"
+        );
+
+        selectsMarca.forEach(function (selectMarca) {
+
+            if (selectMarca.dataset.inicializado === "true") {
+                return;
+            }
+
+            selectMarca.dataset.inicializado = "true";
+
+            const modeloActual =
+                selectMarca.dataset.modeloActual || "";
+
+            cargarModelos(selectMarca, modeloActual);
+
+            selectMarca.addEventListener("change", function () {
+                cargarModelos(this);
+            });
+
+        });
+
+        /*
+         * Vista previa de imágenes.
+         */
+        const inputsImagen = document.querySelectorAll(
+            ".input-imagen-actualizar"
+        );
+
+        inputsImagen.forEach(function (inputImagen) {
+
+            if (inputImagen.dataset.inicializado === "true") {
+                return;
+            }
+
+            inputImagen.dataset.inicializado = "true";
+
+            inputImagen.addEventListener("change", function () {
+
+                const previewId = this.dataset.previewId;
+                const listId = this.dataset.listId;
+
+                const preview =
+                    document.getElementById(previewId);
+
+                const imageList =
+                    document.getElementById(listId);
+
+                const archivos = Array.from(this.files);
+
+                preview.innerHTML = "";
+
+                imageList.value = archivos
+                    .map(function (archivo) {
+                        return archivo.name;
+                    })
+                    .join(",");
+
+                archivos.forEach(function (archivo) {
+
+                    if (!archivo.type.startsWith("image/")) {
+                        return;
+                    }
+
+                    const lector = new FileReader();
+
+                    lector.onload = function (evento) {
+
+                        const contenedor =
+                            document.createElement("div");
+
+                        contenedor.className =
+                            "position-relative";
+
+                        const imagen =
+                            document.createElement("img");
+
+                        imagen.src = evento.target.result;
+                        imagen.alt = archivo.name;
+                        imagen.className =
+                            "rounded border shadow-sm";
+
+                        imagen.style.width = "110px";
+                        imagen.style.height = "80px";
+                        imagen.style.objectFit = "cover";
+
+                        contenedor.appendChild(imagen);
+                        preview.appendChild(contenedor);
+
+                    };
+
+                    lector.readAsDataURL(archivo);
+
+                });
+
+            });
+
+        });
+
+    }
+
+    /*
+     * Ejecutar después de cargar el documento.
+     */
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            inicializarModalActualizacion
+        );
+
+    } else {
+
+        inicializarModalActualizacion();
+
+    }
+
+})();
+</script>
