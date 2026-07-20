@@ -126,7 +126,7 @@
                                             'eliminar_solicitud_credito',
                                             id_credito=solicitud.id_credito
                                         ) }}"
-                                        method="POST"
+                                        method="GET"
                                         class="d-inline"
                                         onsubmit="return confirm('¿Está seguro de eliminar esta solicitud?')">
 
@@ -955,7 +955,7 @@
         contenedorAcciones.className = "acciones-vehiculo";
 
         formularioEliminar.action = solicitud.url_eliminar;
-        formularioEliminar.method = "POST";
+        formularioEliminar.method = "GET";
         formularioEliminar.className = "d-inline";
 
         botonEliminar.type = "submit";
