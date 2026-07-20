@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from models import db, tbl_admin, tbl_carrusel, tbl_catal_autos, tbl_credito, tbl_coti_auto
 from conex import DATABASE_URI
 from sqlalchemy import func, desc, asc
+from sqlalchemy.exc import SQLAlchemyError
 
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
@@ -341,20 +342,26 @@ def agregar_cotizacion_auto():
     else:
         flash('Error al agregar la cotización', 'error')
         return redirect(url_for('cotizaciones_autos'))
-@app.get('/eliminar_cotizacion/<id_coti_auto>')
+
+@app.get('/eliminar_cotizacion/<int:id_coti_auto>')
+@login_required
 def eliminar_cotizacion(id_coti_auto):
+    cotizacion = db.session.get(tbl_coti_auto, id_coti_auto)
 
-    cotizacion = tbl_coti_auto.query.get(id_coti_auto)
-
-    if not cotizacion:
-        flash('La cotización no existe', 'error')
+    if cotizacion is None:
+        flash('La cotización no existe o ya fue eliminada', 'warning')
         return redirect(url_for('cotizaciones_autos'))
 
-    db.session.delete(cotizacion)
-    db.session.commit()
+    try:
+        db.session.delete(cotizacion)
+        db.session.commit()
+        flash('Cotización eliminada correctamente', 'success')
+    except SQLAlchemyError:
+        db.session.rollback()
+        flash('No fue posible eliminar la cotización', 'error')
 
-    flash('Cotización eliminada exitosamente', 'success')
     return redirect(url_for('cotizaciones_autos'))
+
 @app.get('/solicitudes_credito')
 @login_required
 def solicitudes_credito():
@@ -435,19 +442,23 @@ def api_solicitudes_credito():
     )
 
     return respuesta
-@app.get('/eliminar_solicitud_credito/<id_credito>')
+@app.get('/eliminar_solicitud_credito/<int:id_credito>')
+@login_required
 def eliminar_solicitud_credito(id_credito):
+    solicitud = db.session.get(tbl_credito, id_credito)
 
-    solicitud = tbl_credito.query.get(id_credito)
-
-    if not solicitud:
-        flash('La solicitud de crédito no existe.', 'error')
+    if solicitud is None:
+        flash('La solicitud de crédito no existe o ya fue eliminada', 'warning')
         return redirect(url_for('solicitudes_credito'))
 
-    db.session.delete(solicitud)
-    db.session.commit()
+    try:
+        db.session.delete(solicitud)
+        db.session.commit()
+        flash('Solicitud de crédito eliminada correctamente', 'success')
+    except SQLAlchemyError:
+        db.session.rollback()
+        flash('No fue posible eliminar la solicitud de crédito', 'error')
 
-    flash('Solicitud de crédito eliminada exitosamente.', 'success')
     return redirect(url_for('solicitudes_credito'))
 
 @app.post('/agregar_solicitud_credito')
@@ -831,14 +842,14 @@ def credito():
     
     return render_template('clientes/credito.html')
 @app.post('/solicitud_credito')
-def solicitud_credito(): 
-    if request.method == 'POST':
+def solicitud_credito():
+    try:
         nombre_cliente = request.form['nombre_cliente']
         ap_cliente = request.form['ap_cliente']
-        am_cliente = request.form['am_cliente']
+        am_cliente = request.form.get('am_cliente', '')
         celular_cliente = request.form['celular_cliente']
         correo_cliente = request.form['correo_cliente']
-        monto = request.form['monto']
+        monto = request.form['monto'].replace(',', '')
 
         nueva_solicitud = tbl_credito(
             nombre_cliente=nombre_cliente,
@@ -846,17 +857,24 @@ def solicitud_credito():
             am_cliente=am_cliente,
             celular_cliente=celular_cliente,
             correo_cliente=correo_cliente,
-            monto=monto,
-
+            monto=monto
         )
+
         db.session.add(nueva_solicitud)
         db.session.commit()
 
-        flash('Solicitud enviada con exito', 'success')
-        return redirect(url_for('credito'))     
-    else:
-        flash('Error al agregar el auto', 'error')
-        return redirect(url_for('credito'))
+        # Categoría exclusiva para el formulario público de crédito.
+        flash('Tu solicitud fue registrada correctamente.', 'credito_success')
+
+    except Exception as error:
+        db.session.rollback()
+        app.logger.error(f'Error al registrar solicitud pública: {error}')
+        flash(
+            'No fue posible registrar la solicitud. Verifica la información.',
+            'credito_error'
+        )
+
+    return redirect(url_for('credito'))
     #Vehiculos informacion
 
 @app.get('/info_auto/<id_auto>')
@@ -891,5 +909,6 @@ def registrar_cotizacion_auto():
 
     flash('Solicitud enviada con éxito.', 'success')
     return redirect(request.referrer)
-if __name__ == "__main__":
-    app.run(debug=True)
+
+if __name__ == '__main__':
+    app.run("0.0.0.0", 8081, debug=True)
